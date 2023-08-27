@@ -11,7 +11,7 @@
   [
     #ipsum
     
-    This thesis template is available at #link("https://github.com/parcio/templates") and consists of Chapters @intro[] to @conc[]. It also contains Appendix A.
+    This thesis template is available at #link("https://github.com/parcio/templates") and consists of Chapters @intro[] to @conc[]. It also contains @appendix.
   ]
 )
 
@@ -126,7 +126,8 @@ Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auct
 #pagebreak(to: "odd")
 #bibliography("report.bib", style: "apa", title: "Bibliography")
 
-#heading(numbering: "A.")[Appendix]
+#counter(heading).update(0)
+#heading(numbering: "A.", supplement: "Appendix")[Appendix]<appendix>
 #align(left)[
   #figure(caption: "Caption")[
   ```c

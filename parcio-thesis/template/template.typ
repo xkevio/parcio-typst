@@ -140,10 +140,13 @@
     r
   }
 
-  // Make @heading automatically say "Chapter XYZ" instead of "Section XYZ".
+  // Make @heading automatically say "Chapter XYZ" instead of "Section XYZ",
+  // unless we want to manually specify it.
   set ref(supplement: it => {
-    if it.func() == heading {
+    if it.func() == heading.where(supplement: none) {
       "Chapter"
+    } else {
+      it.supplement
     }
   })
 
@@ -163,6 +166,8 @@
     show heading: pad.with(bottom: 1em)
     o
   }
+
+  // Level 2 and deeper.
   show outline.entry: it => {
     let cc = it.body.children.first().text
     
@@ -170,11 +175,12 @@
       grid(columns: (auto, 1fr, auto),
         h(1.5em) + link(it.element.location())[#cc#h(1em)#it.element.body],
         it.fill,
-        box(width: 1em) + it.page
+        box(width: 1.5em) + it.page
       )
     )
   }
-  
+
+  // Level 1 chapters get bold and no dots.
   show outline.entry.where(level: 1): it => {
     set text(font: "Libertinus Sans")
     let cc = if it.element.body == [Appendix] {
