@@ -9,7 +9,7 @@
     mail: "author@ovgu.de"
   ),
   [
-    #ipsum
+    #lorem(130)
     
     This thesis template is available at #link("https://github.com/parcio/templates") and consists of Chapters @intro[] to @conc[]. It also contains @appendix.
   ]
@@ -30,14 +30,14 @@
 #set page(numbering: (p, ..) => if calc.odd(p) {p})
 #counter(page).update(0)
 
-// ACTUAL CONTENT OF THESIS
+// ACTUAL CONTENT OF THESIS (use \ for additional line breaks)
 = Introduction<intro>
 
 \ _In this chapter, ..._ \ \
 
 == Motivation
 
-// subfigures, needs "kind" of "sub" and a grid rn
+// Subfigures, needs "kind" of "sub" and a grid currently.
 #figure(caption: "Caption")[
   #grid(columns: 2)[
     #figure(caption: "Left", kind: "sub", supplement: none, numbering: "a")[
@@ -50,11 +50,11 @@
   ]
 ]<fig1>
 \
-You can refer to  the subfigures (Figures 1.1@fig1a and 1.1@fig1b) or the figure (@fig1).
+You can refer to  the subfigures (Figures @fig1a and @fig1b) or the figure (@fig1).
 \ \
 
 #section[Summary]
-Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi. Morbi ac orci et nisl hendrerit mollis. Suspendisse ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam tincidunt urna. Nulla ullamcorper vestibulum turpis. Pellentesque cursus luctus mauris.
+#lorem(80)
 
 = Background<bg>
 
@@ -82,31 +82,33 @@ You can also refer to tables (@tb1).
 $ E = m c^2 $<eq1>
 \
 #section[Summary]
-Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi. Morbi ac orci et nisl hendrerit mollis. Suspendisse ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam tincidunt urna. Nulla ullamcorper vestibulum turpis. Pellentesque cursus luctus mauris.
+#lorem(80)
 
 = Evaluation<eval>
 _In this chapter, ..._\ \
 
 == Listings
-#align(left)[
-  #figure(caption: "Caption")[
-  ```c
-  printf("Hello world!\n");
-  
-  // Comment
-  for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-          sum += 'a';
-      }
-  }
-  ```
-  ]<code1>
-]
+#figure(caption: "Caption")[
+  // Supports highlighting with the `highlighted` parameter,
+  // e.g. #src(highlighted: (1,))[...]
+  #src[
+    ```c
+    printf("Hello world!\n");
+    
+    // Comment
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            sum += 'a';
+        }
+    }
+    ```
+  ]
+]<code1>
 
 You can also refer to listings (@code1).\ \
 
 #section[Summary]
-Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi. Morbi ac orci et nisl hendrerit mollis. Suspendisse ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam tincidunt urna. Nulla ullamcorper vestibulum turpis. Pellentesque cursus luctus mauris.
+#lorem(80)
 
 #pagebreak()
 = Conclusion<conc>
@@ -117,10 +119,10 @@ _In this chapter, ..._\ \
 
 #lorem(100)
 
-Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi. Morbi ac orci et nisl hendrerit mollis. Suspendisse ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam tincidunt urna. Nulla ullamcorper vestibulum turpis. Pellentesque cursus luctus mauris.
+#lorem(80)
 
 #section[Summary]
-Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. Nam lacus libero, pretium at, lobortis vitae, ultricies et, tellus. Donec aliquet, tortor sed accumsan bibendum, erat ligula aliquet magna, vitae ornare odio metus a mi. Morbi ac orci et nisl hendrerit mollis. Suspendisse ut massa. Cras nec ante. Pellentesque a nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam tincidunt urna. Nulla ullamcorper vestibulum turpis. Pellentesque cursus luctus mauris.
+#lorem(80)
 
 // -------------------------
 #pagebreak(to: "odd")
@@ -128,18 +130,20 @@ Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auct
 
 #counter(heading).update(0)
 #heading(numbering: "A.", supplement: "Appendix")[Appendix]<appendix>
-#align(left)[
-  #figure(caption: "Caption")[
-  ```c
-  printf("Hello world!\n");
-  
-  // Comment
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      sum += 'a';
+#figure(caption: "Caption")[
+  // Supports highlighting with the `highlighted` parameter,
+  // e.g. #src(highlighted: (1,))[...]
+  #src(highlighted: (1, 6))[
+    ```c
+    printf("Hello world!\n");
+    
+    // Comment
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            sum += 'a';
+        }
     }
-  }
-  ```
+    ```
   ]
 ]
 

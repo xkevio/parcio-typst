@@ -13,30 +13,30 @@
 #let LARGE = 20.74pt
 #let huge = 24.88pt
 
-// Typst has its own `#lorem()` function but I wanted to make this comparable
-// to the LaTeX template which uses a different variant of this placeholder text.
-#let ipsum = [
-  Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam
-  arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et
-  malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus
-  sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet
-  tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc.
-  Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla,
-  malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec
-  varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis,
-  diam. Duis eget orci sit amet orci dignissim rutrum.
-]
-
 // TODO box.
-#let todo(text) = rect(
+#let todo = rect.with(
   fill: ovgu-orange,
   stroke: black + 0.5pt,
   radius: 0.25em,
   width: 100%
-)[#text]
+)
 
 // Like \section* (unnumbered level 2 heading, does not appear in ToC).
-#let section(title) = heading(level: 2, outlined: false, numbering: none)[#title]
+#let section = heading.with(level: 2, outlined: false, numbering: none)
+
+// Styled codeblock with line numbers, uses the codelst package.
+#let src = sourcecode.with(
+  gutter: 0em,
+  frame: block.with(
+    stroke: 0.5pt + gray, 
+    inset: (x: 0.5em, y: 0.5em), 
+    width: 100%
+  ),
+  numbers-style: n => {
+    set text(fill: ovgu-darkgray, font: "Inconsolata", 0.95 * 12pt)
+    h(-2.5em) + n
+  }
+)
 
 // ----------------------
 //   CUSTOM PARCIO TABLE
@@ -129,11 +129,22 @@
   show ref: r => {
     let elem = r.element
     if elem != none and elem.func() == figure {
-      if elem.kind == image or elem.kind == table or elem.kind == raw {
-         return [#elem.supplement #elem.counter.display(n => {
-          let chapter = counter(heading.where(level: 1)).display()
-          link(elem.location())[#chapter#n]
-         })]     
+      let chapter = counter(heading.where(level: 1)).display()
+      let n = if elem.kind != "sub" { 
+        elem.counter.at(elem.location()).at(0)
+      } else {
+        let nn = counter(
+          figure.where(kind: image)
+            .or(figure.where(kind: table))
+            .or(figure.where(kind: raw)))
+            .at(elem.location()).at(0)
+
+        let sub-counter = numbering("a", counter(figure.where(kind: "sub")).at(elem.location()).at(0))
+        [#nn#sub-counter]
+      }
+
+      if elem.kind == image or elem.kind == table or elem.kind == raw or elem.kind == "sub" {
+         return [#elem.supplement #link(elem.location())[#chapter#n]]
       }
     }
 
@@ -151,7 +162,7 @@
   })
 
   // Changes every citation that has (...et al.) in it to use square brackets.
-  // TODO.
+  // TODO: Update to apalike when CSL support is here.
   show cite: c => {
     show regex("[(].*(et al.).*[)]"): r => {
       r.text.replace("(", "[").replace(")", "]").replace(".", ".,")
@@ -205,26 +216,6 @@
   // It is very limited; using Typst's own highlighting might be more expressive.
   set raw(theme: "ovgu.tmTheme")
   show raw: set text(font: "Inconsolata")
-  
-  // Custom line numbering, not native yet.
-  // Packages exist that implement this.
-  show raw.where(block: true): r => [
-    #grid(columns: 2, column-gutter: -1em)[
-      #v(1em)
-      #set text(fill: ovgu-darkgray, font: "Inconsolata", 0.95 * 12pt)
-      #set par(leading: 0.65em)
-      #move(dx: -1.5em, dy: -0.5em)[
-        #for (i, l) in r.text.split("\n").enumerate() [
-          #box[#align(right)[#{i + 1}]]
-          #linebreak()
-        ]
-      ]
-    ][    
-      #block(stroke: 0.5pt + gray, inset: (x: 0.5em, y: 0.5em), width: 100%)[
-        #align(left)[#r]
-      ]
-    ]
-  ]
 
   // TODO (make better): Custom subfigure counter ((a), (b), ...).
   show figure.where(kind: "sub"): f => {
