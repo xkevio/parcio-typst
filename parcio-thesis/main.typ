@@ -1,7 +1,9 @@
 #import "template/template.typ": *
 #import "@preview/codelst:1.0.0": *
 
-// Title, Author, Abstract.
+// Title, Author, Abstract,
+// optional: thesis-type to specify "Bachelor", "Master", "PhD", etc.,
+// optional: reviewers to specify "first-reviewer", "second-reviewer" and (if needed) "supervisor".
 #show: project.with(
   "Title", 
   (
@@ -11,22 +13,21 @@
   [
     #lorem(130)
     
-    This thesis template is available at #link("https://github.com/parcio/templates") and consists of Chapters @intro[] to @conc[]. It also contains @appendix.
-  ]
+    This thesis template is available at #link("https://github.com/parcio/templates") and 
+    consists of Chapters @intro[] to @conc[]. It also contains @appendix.
+  ],
+  // optional: thesis-topic: "Bachelor",
+  reviewers: ("Prof. Dr. Musterfrau", "Prof. Dr. Mustermann", "Dr. Evil")
 )
 
-// OUTLINE (TOC) & NUMBERING CHANGES FROM ROMAN TO LATIN
+// Set lower roman numbering for ToC.
 #set page(
-  numbering: (p, _) => locate(loc => {
-    let c-page = query(heading.where(body: [Contents]), loc).at(0)
-    if c-page != none and c-page.location().page() == loc.page() {
-      counter(page).display("i")
-    }
-  }
-  ),
+  numbering: "i",
   margin: (top: 5cm, rest: 2.5cm)
 )
 #outline(depth: 3)
+
+// Set arabic numbering for everything else and reset page counter.
 #set page(numbering: (p, ..) => if calc.odd(p) {p})
 #counter(page).update(0)
 
@@ -62,6 +63,7 @@ _In this chapter, ..._\ \
 
 
 == Citations
+// Simpler keys can be cited with @key but this one needs the full syntax bcs of the slashes.
 You can comfortably reference literature #cite("DBLP:journals/superfri/DuweLMSF0B020").#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/.
 
 == Tables

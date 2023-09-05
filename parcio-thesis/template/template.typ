@@ -69,7 +69,7 @@
 // ----------------------
 //   ACTUAL TEMPLATE
 // ----------------------
-#let project(title, author, abstract, body) = {
+#let project(title, author, abstract, thesis-type: "Bachelor/Master", reviewers: (), body) = {
   set document(title: title, author: author.name)
   set page("a4", margin: 2.5cm, number-align: right)
   set text(font: "Libertinus Serif", 12pt, lang: "en")
@@ -229,6 +229,7 @@
 
   set footnote.entry(separator: line(length: 40%, stroke: 0.5pt))
 
+  // STYLIZING TITLE PAGE AND ABSTRACT BEGINS HERE:
   // Can't import pdf yet (svg works).
   align(center)[
     #image(alt: "Blue OVGU logo", width: 66%, "ovgu.svg")  
@@ -237,7 +238,7 @@
   v(4.75em)
 
   align(center)[
-    #text(Large, font: "Libertinus Serif")[*Bachelor/Master Thesis*]
+    #text(Large, font: "Libertinus Serif")[*#thesis-type Thesis*]
     #v(2.5em)
     #text(huge, font: "Libertinus Sans")[*#title*]
     #v(1.25em)
@@ -253,16 +254,27 @@
     #text(Large)[#datetime.today().display("[month repr:long] [day], [year]")]
     #v(5.35em)
 
-    First Reviewer:\
-    Prof. Dr. Musterfrau\ \
-    #v(-1.5em)
+    // first and second reviewer are required, supervisor is optional.
+    #if reviewers.len() >= 2 {
+      let first-reviewer = reviewers.first()
+      let second-reviewer = reviewers.at(1)
+      let supervisor = reviewers.at(2, default: none)
 
-    Second Reviewer:\
-    Prof. Dr. Mustermann\ \
-    #v(-1.5em)
+      [
+        First Reviewer:\
+        #first-reviewer\ \
+        #v(-1.5em)
+    
+        Second Reviewer:\
+        #second-reviewer\ \
+        #v(-1.5em)
 
-    Supervisor:\
-    Dr. Evil
+        #if supervisor != none [
+          Supervisor:\
+          #supervisor
+        ]
+      ]
+    }
   ]
   
   show raw: set text(12pt * 0.95)
@@ -274,6 +286,7 @@
     #align(left, abstract)
   ]
   
-  pagebreak(to: "odd")
+  pagebreak()
+  pagebreak()
   body
 }
