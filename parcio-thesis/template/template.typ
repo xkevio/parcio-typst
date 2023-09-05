@@ -1,5 +1,6 @@
+#import "@preview/codelst:1.0.0": sourcecode
+#import "@preview/drafting:0.1.0": margin-note, set-page-properties
 #import "@preview/tablex:0.0.5": *
-#import "@preview/codelst:1.0.0": *
 
 #let ovgu-blue = rgb("#0068B4")
 #let ovgu-darkgray = rgb("#606060")
@@ -13,13 +14,19 @@
 #let LARGE = 20.74pt
 #let huge = 24.88pt
 
-// TODO box.
-#let todo = rect.with(
-  fill: ovgu-orange,
-  stroke: black + 0.5pt,
-  radius: 0.25em,
-  width: 100%
-)
+// TODO box (default: no inline).
+#let todo(inline: false, body) = if inline {
+  rect(
+    fill: ovgu-orange,
+    stroke: black + 0.5pt,
+    radius: 0.25em,
+    width: 100%,
+    body
+  )
+} else {
+  set rect(fill: ovgu-orange)
+  margin-note(stroke: ovgu-orange, body)
+}
 
 // Like \section* (unnumbered level 2 heading, does not appear in ToC).
 #let section = heading.with(level: 2, outlined: false, numbering: none)
@@ -279,6 +286,7 @@
   
   show raw: set text(12pt * 0.95)
   pagebreak(to: "odd")
+  set-page-properties(margin-left: 2.5cm, margin-right: 2.75cm)
 
   v(-8.5em)
   align(center + horizon)[

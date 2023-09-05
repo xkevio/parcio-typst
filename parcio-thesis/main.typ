@@ -1,5 +1,4 @@
 #import "template/template.typ": *
-#import "@preview/codelst:1.0.0": *
 
 // Title, Author, Abstract,
 // optional: thesis-type to specify "Bachelor", "Master", "PhD", etc.,
@@ -117,9 +116,9 @@ You can also refer to listings (@code1).\ \
 _In this chapter, ..._\ \
 
 == Todos
-#todo[FIXME]
+#todo(inline: true)[FIXME]
 
-#lorem(100)
+#lorem(100)#todo[FIXME: remove this]
 
 #lorem(80)
 
