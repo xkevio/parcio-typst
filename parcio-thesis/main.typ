@@ -28,7 +28,7 @@
 
 // Set arabic numbering for everything else and reset page counter.
 #set page(numbering: (p, ..) => if calc.odd(p) {p})
-#counter(page).update(0)
+#counter(page).update(1)
 
 // ACTUAL CONTENT OF THESIS (use \ for additional line breaks)
 = Introduction<intro>
