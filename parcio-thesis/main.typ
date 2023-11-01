@@ -9,31 +9,23 @@
     name: "Author",
     mail: "author@ovgu.de"
   ),
-  [
-    #lorem(130)
-    
-    This thesis template is available at https://github.com/parcio/templates and 
-    consists of Chapters @intro[] to @conc[]. It also contains @appendix.
-  ],
-  // optional: thesis-topic: "Bachelor",
+  include "abstract.typ",
+  thesis-type: "Bachelor/Master",
   reviewers: ("Prof. Dr. Musterfrau", "Prof. Dr. Mustermann", "Dr. Evil")
 )
 
-// Set lower roman numbering for ToC.
-#set page(
-  numbering: "i",
-  margin: (top: 5cm, rest: 2.5cm)
-)
+// Set lower roman numbering for ToC and abstract (template hides numbering).
+#set page(margin: (top: 5cm, rest: 2.5cm), footer: none)
 #outline(depth: 3)
 
 // Set arabic numbering for everything else and reset page counter.
-#set page(numbering: (p, ..) => if calc.odd(p) {p})
+#set page(numbering: "1")
 #counter(page).update(1)
 
 // ACTUAL CONTENT OF THESIS (use \ for additional line breaks)
 = Introduction<intro>
 
-\ _In this chapter, ..._ \ \
+\ _In this chapter, #lorem(50)_ \
 
 == Motivation
 
@@ -62,14 +54,10 @@ _In this chapter, ..._\ \
 
 
 == Citations
-// Simpler keys can be cited with @key but this one needs the full syntax bcs of the slashes.
-You can comfortably reference literature #cite("DBLP:journals/superfri/DuweLMSF0B020").#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/.
+You can comfortably reference literature @DuweLMSF0B020.#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/.
 
 == Tables
 #figure(caption: "Caption")[
-  // alignment change currently only for 3 columns, can be changed tho
-  // scaling also dependent on header size
-  // normal typst #table function works just fine in that regard but is less customizable rn
   #parcio-table(3, 3, 
     [*Header 1*], [*Header 2*], [*Header 3*],
     [Row 1],[Row 1],[Row 1],
@@ -126,8 +114,13 @@ _In this chapter, ..._\ \
 #lorem(80)
 
 // -------------------------
-#pagebreak(to: "odd")
-#bibliography("report.bib", style: "apa", title: "Bibliography")
+#pagebreak()
+#pagebreak()
+
+#bibliography("bibliography/report.bib", style: "apalike.csl")
+
+#pagebreak()
+#pagebreak()
 
 #counter(heading).update(0)
 #heading(numbering: "A.", supplement: "Appendix")[Appendix]<appendix>

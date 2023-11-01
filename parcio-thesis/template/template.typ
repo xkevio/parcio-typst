@@ -78,7 +78,7 @@
 // ----------------------
 #let project(title, author, abstract, thesis-type: "Bachelor/Master", reviewers: (), body) = {
   set document(title: title, author: author.name)
-  set page("a4", margin: 2.5cm, number-align: right)
+  set page("a4", margin: 2.5cm, number-align: right, numbering: "i", footer: [])
   set text(font: "Libertinus Serif", 12pt, lang: "en")
   set heading(numbering: "1.1.")
   set par(justify: true)
@@ -99,7 +99,7 @@
   show heading.where(level: 1): h => {
     set text(huge)
     if h.numbering != none {
-      pagebreak(weak: true, to: "odd")
+      pagebreak(weak: true)
       if h.body == [Appendix] {
         counter(heading.where(level: 1)).update(1)
         [Appendix #counter(heading.where(level: 1)).display(h.numbering)]
@@ -167,16 +167,6 @@
       it.supplement
     }
   })
-
-  // Changes every citation that has (...et al.) in it to use square brackets.
-  // TODO: Update to apalike when CSL support is here.
-  show cite: c => {
-    show regex("[(].*(et al.).*[)]"): r => {
-      r.text.replace("(", "[").replace(")", "]").replace(".", ".,")
-    }
-
-    c
-  }
 
   // Customize ToC to look like template.
   set outline(fill: repeat[~~.], indent: none)
