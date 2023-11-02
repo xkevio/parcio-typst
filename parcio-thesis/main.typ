@@ -9,7 +9,7 @@
     name: "Author",
     mail: "author@ovgu.de"
   ),
-  include "abstract.typ",
+  include "chapters/abstract.typ",
   thesis-type: "Bachelor/Master",
   reviewers: ("Prof. Dr. Musterfrau", "Prof. Dr. Mustermann", "Dr. Evil")
 )
@@ -117,7 +117,7 @@ _In this chapter, ..._\ \
 #pagebreak()
 #pagebreak()
 
-#bibliography("bibliography/report.bib", style: "apalike.csl")
+#bibliography("bibliography/report.bib", style: "bibliography/apalike.csl")
 
 #pagebreak()
 #pagebreak()
