@@ -15,6 +15,7 @@
 #let ovgu-orange = rgb("#F39100")
 
 #let m-footer = state("m-footer", [])
+#let m-section = state("m-section", [])
 #let total_slide_count = counter("total_slide_count")
 
 #let m-cell = block.with(
@@ -73,7 +74,7 @@
 
 // Start of theme rules.
 #let parcio-theme(
-    aspect-ratio: "4-3",
+    aspect-ratio: "16-9",
     footer: [],
     body
 ) = {
@@ -88,7 +89,7 @@
     set text(font: "Libertinus Sans")
     m-footer.update(footer)
 
-    set list( indent: 20pt)
+    set list(indent: 20pt)
 
     body
 }
@@ -135,21 +136,31 @@
     })
   }
    
-  m-footer.update([#title | #utils.current-section])
+  m-footer.update([#author#h(1fr)#title#h(1fr)#logic.logical-slide.display() / #utils.last-slide-number])
   counter("total_slide_count").update(n => n + 2)
   polylux-slide(content)
 }
 
 #let slide(
     title: none,
+    show-footer: true,
+    new-section: none,
     body
 ) = {
     let header = {
         set align(top)
         if title != none {
+            if new-section != none {
+              utils.register-section(new-section)
+            
+            }
             show: m-cell.with(fill: ovgu-lightgray, inset: 1em)
             set align(horizon)
-            text(fill: ovgu-blue, size: 1.2em)[*#title*]
+            [
+              #text(fill: ovgu-blue, size: 1.1em)[*#title*]
+              #h(1fr)
+              #text(fill: ovgu-blue, size: 1em)[*#utils.current-section*]
+            ]
         } else { 
             strong("Missing Headline")
         }
@@ -157,17 +168,18 @@
         block(height: 1pt, width: 100%, spacing: 0pt, m-progress-bar)
     }
 
-    let footer = {
-        show: pad.with(.5em)
-        set text(size: 0.8em)
+    let footer = if show-footer {
+        show: pad.with(bottom: .25em, rest: 0.5em)
+        set text(size: 0.7em)
         set align(bottom)
         
-        text(fill: m-dark-teal.lighten(40%), m-footer.display())
-        h(1fr)
+        text(fill: m-dark-teal, m-footer.display())
+        // h(1fr)
         
-        counter("total_slide_count").update(n => n + 1)
-        text(fill: m-dark-teal, logic.logical-slide.display()
-        + [/] + utils.last-slide-number)
+        // counter("total_slide_count").update(n => n + 1)
+        // text(fill: m-dark-teal)[
+        //   #logic.logical-slide.display() / #utils.last-slide-number
+        // ]
     }
 
     set page(
@@ -187,8 +199,20 @@
     polylux-slide(content)
 }
 
-#let s(t: none, body) = slide(title: t, body)
+#let outline-slide = slide(title: "Outline", show-footer: false)[
+  #set enum(numbering: n => [], tight: false, spacing: 1fr)
+  #utils.polylux-outline()
+]
 
+#let s(t: none, ns: none, body) = slide(title: t, new-section: ns, body)
+// #let new-section(title) = [
+//     #slide(title: "Outline")[
+//       // Disable numbering for outline.
+//       #set enum(numbering: n => [], tight: false, spacing: 1fr)
+//       #show enum.item.where(body: [#title]): set text(red)
+//       #utils.polylux-outline()
+//   ]
+// ]
 #let section(name) = {
   utils.register-section(name)
 }

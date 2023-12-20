@@ -1,58 +1,48 @@
-#import "parcio_template/parcio.typ": *
+#import "template/parcio.typ": *
 #import themes.metropolis: metropolis-outline
 
 #show: parcio-theme.with()
 #set text(size: 25pt)
 
-
-
 #title-slide(
     title: "Title",
-    subtitle: "Never gonna give you up",
-    author: lorem(5),
-    date: datetime.today().display("[month repr:long] [day], [year]")
+    subtitle: "Subtitle",
+    author: [Author/*\ #link("mailto:author@ovgu.de", `author@ovgu.de`)*/],
+    date: datetime.today().display("[month repr:long] [day], [year]"),
+    extra: [
+        #set text(0.8em)
+        Faculty of Computer Science\
+        Otto von Guericke University Magdeburg
+    ]
 )
 
-#slide(title: "Table of Contents")[
-   #metropolis-outline
+#outline-slide
+
+#slide(title: "Template", new-section: "Introduction")[
+    - This presentation template is available at ... and consists of Sections 1 to 4.
 ]
 
-#slide(title: "#lorem(2)")[
-    #section("Sektion 1")
-    = Headline
-    #lorem(40)
+
+#slide(title: "Figures")[
+    subfigures...
 ]
 
-#slide(title: "testing")[
-    #section("Sektion 2")
-    = testing 
-    this is some text 
-
-    - bullet point
-        - bullet point in a bullet point
-    - #lorem(4)
-        - better
-
-    #src[
-        ```java
-        public static void main(String[] args) {
-            System.out.println("Hello World");
-        }
-        ``` 
-    ]
+#slide(title: "References", new-section: "Background")[
+    - You can comfortably reference literature...#footnote[This is a footnote.]
 ]
 
-#slide(title: "testing1")[
-    = Hello World
-    == Hello World
-    === Hello World
-    #lorem(20)
+#slide(title: "Tables")[
+    #figure(caption: "Caption", parcio-table(3, 3, 
+        [*Header 1*], [*Header 2*], [*Header 3*],
+        [Row 1],[Row 1],[Row 1],
+        [Row 2],[Row 2],[Row 2],
+    ))<tbl>
+
+    - You can also refer to tables (@tbl)
 ]
 
-#slide(title: "math test")[
-    #section("Sektion 3")
-    #set align(center)
-    #figure(caption: "Beweis für nichts")[
+#slide(title: "Math")[
+    #figure(caption: "Lots of fun math!")[
         $&sum_(k = 0)^n pi dot k \
         <=> &sum_(k = 1)^n pi dot k \
         <=> &sum_(k = 2)^n (pi dot k) + pi
@@ -60,50 +50,26 @@
     ]
 ]
 
-#slide(title: "table test")[
-    #set align(center)
-    #parcio-table(
-        3, 3, 
-    [*Header 1*], [*Header 2*], [*Header 3*],
-    [Row 1],[Row 1],[Row 1],
-    [Row 2],[Row 2],[Row 2],
-    )
 
-    #set align(top)
-    #lorem(5)
+#s(t: "Listings", ns: "Evaluation")[
+    // listings.
 ]
 
-#s(t: "shorter and quicker")[
-    Normally you create slides while using 
-    #src[
-        ```typ 
-        #slide(title: _)[
-            ....
-        ]
-        ```
-    ]
-    We can now simplify it as
-    #src[
-        ```typ 
-        #s(t: _)[
-            ....
-        ]
+#s(t: "Columns")[
+    #grid(columns: (1fr, 1fr), column-gutter: 1em)[
+        - Slides can be split into columns
+    ][
+        ```c
+        printf("Hello world!\n");
         ```
     ]
 ]
 
-#s(t: "ToDo Test")[
-    ToDos are great for annotating things while coding
-    #todo[
-        ToDo: fix something
-    ]
+#s(t: "Todos", ns: "Conclusion")[
+    #todo("FIXME")
+    #lorem(65)
 ]
 
-#s(t: "Bullet Point tests")[
-    - #lorem(2)
-        - #lorem(5)
+#s(t: "References", ns: [])[
 
-    #list()[
-        "thelp"
-    ]
 ]
