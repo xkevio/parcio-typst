@@ -2,15 +2,18 @@
 #import themes.metropolis: metropolis-outline
 
 #show: parcio-theme.with()
-#set text(size: 25pt)
+#set text(size: 20pt)
 
 #title-slide(
     title: "Title",
     subtitle: "Subtitle",
-    author: [Author/*\ #link("mailto:author@ovgu.de", `author@ovgu.de`)*/],
+    author: (
+        name: "Author",
+        mail: "author@ovgu.de"
+    ),
     date: datetime.today().display("[month repr:long] [day], [year]"),
     extra: [
-        #set text(0.8em)
+        #set text(0.825em)
         Faculty of Computer Science\
         Otto von Guericke University Magdeburg
     ]
@@ -52,7 +55,20 @@
 
 
 #s(t: "Listings", ns: "Evaluation")[
-    // listings.
+    #figure(caption: "Caption")[
+        ```c
+        printf("Hello World\n");
+
+        // Comment
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                sum += 'a';
+            }
+        }
+        ```
+    ]<lst>
+
+    - You can also refer to listings (@lst)
 ]
 
 #s(t: "Columns")[
@@ -60,16 +76,21 @@
         - Slides can be split into columns
     ][
         ```c
-        printf("Hello world!\n");
+        printf("Hello World\n");
+
+        // Comment
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                sum += 'a';
+            }
+        }
         ```
     ]
 ]
 
 #s(t: "Todos", ns: "Conclusion")[
     #todo("FIXME")
-    #lorem(65)
+    #lorem(125)
 ]
 
-#s(t: "References", ns: [])[
-
-]
+#bib-slide()

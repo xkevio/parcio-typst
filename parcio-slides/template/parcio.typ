@@ -1,12 +1,12 @@
-#import "@preview/codelst:1.0.0": sourcecode
 #import "@preview/polylux:0.3.1": *
-#import "@preview/tablex:0.0.5": *
+#import "@preview/tablex:0.0.7": *
 
 #let extra-light-gray = rgb("#FFFFFF")
 #let m-dark-teal = rgb("#23373b")
 #let m-light-brown = rgb("#eb811b")
 #let m-lighter-brown = rgb("#d6c6b7")
 #let m-extra-light-gray = white.darken(2%)
+
 #let ovgu-red = rgb("#D13F58")
 #let ovgu-purple = rgb("#7A003F")
 #let ovgu-blue = rgb("#0068B4")
@@ -15,9 +15,6 @@
 #let ovgu-orange = rgb("#F39100")
 
 #let m-footer = state("m-footer", [])
-#let m-section = state("m-section", [])
-#let total_slide_count = counter("total_slide_count")
-
 #let m-cell = block.with(
   width: 100%,
   height: 120%,
@@ -26,21 +23,6 @@
   breakable: false
 )
 
-// ~~stolen~~ migrated from github.com/xkevio/parcio-typst
-#let src = sourcecode.with(
-  gutter: 0em,
-  frame: block.with(
-    stroke: 0.5pt + gray, 
-    inset: (x: 0.5em, y: 0.5em), 
-    width: 100%,
-  ),
-  numbers-style: n => {
-    set text(fill: ovgu-darkgray, font: "Inconsolata", 20pt)
-    h(-1.5em) + n
-  }
-)
-
-// ~~stolen~~ migrated from github.com/xkevio/parcio-typst
 #let parcio-table(columns, rows, ..tablec) = {
   let header-data = tablec.pos().slice(0, columns)
   let rest = tablec.pos().slice(columns)
@@ -87,15 +69,14 @@
     )
     
     set text(font: "Libertinus Sans")
-    m-footer.update(footer)
 
     set list(indent: 20pt)
+    m-footer.update(footer)
 
     body
 }
 
-#let m-progress-bar = utils.polylux-progress( ratio => {
-  let d-progress = ratio
+#let m-progress-bar = utils.polylux-progress(ratio => {
   grid(
     columns: (ratio * 100%, 1fr),
     m-cell(fill: ovgu-purple),
@@ -106,26 +87,34 @@
 #let title-slide(
   title: [],
   subtitle: none,
-  author: none,
+  author: (:),
   date: none,
   extra: none,
 ) = {
   let content = {
     set text(fill: m-dark-teal)
+    show raw: set text(font: "Inconsolata", 1.15em)
+
     set align(horizon)
     
-    block(width: 100%, inset: 2em, {
-      text(size: 1.3em, strong(title))
-      if subtitle != none {
-        linebreak()
-        text(size: 0.9em, subtitle)
-      }
+    v(-1em)
+    block(width: 100%, inset: 2.5em, height: 100%, {
+      table(columns: (1fr, 1fr), align: (left, right), stroke: none, inset: 0pt,
+        text(size: 1.3em, strong(title) + v(-0.25em) + text(0.85em, subtitle)),
+        image("ovgu.svg", width: 75%)
       
-      line(length: 100%, stroke: 1.1pt + ovgu-purple)
-      set text(size: .8em)
-      
+      )
+
+      v(-0.5em)
+      line(length: 100%, stroke: 1pt + ovgu-purple)
+      v(2em)
+
+      set text(size: .9em)
       if author != none {
-        block(spacing: 1em, author)
+        block(spacing: 1em)[
+          #author.name\
+          #link("mailto:" + author.mail, raw(author.mail))
+        ]
       }
       if date != none {
         block(spacing: 1em, date)
@@ -136,15 +125,15 @@
     })
   }
    
-  m-footer.update([#author#h(1fr)#title#h(1fr)#logic.logical-slide.display() / #utils.last-slide-number])
-  counter("total_slide_count").update(n => n + 2)
+  m-footer.update([#author.name#h(1fr)#title#h(1fr)#logic.logical-slide.display() / #utils.last-slide-number])
   polylux-slide(content)
 }
 
 #let slide(
     title: none,
-    show-footer: true,
     new-section: none,
+    show-current-section: true,
+    show-footer: true,
     body
 ) = {
     let header = {
@@ -152,14 +141,16 @@
         if title != none {
             if new-section != none {
               utils.register-section(new-section)
-            
             }
+
             show: m-cell.with(fill: ovgu-lightgray, inset: 1em)
             set align(horizon)
             [
               #text(fill: ovgu-blue, size: 1.1em)[*#title*]
-              #h(1fr)
-              #text(fill: ovgu-blue, size: 1em)[*#utils.current-section*]
+              #if show-current-section [
+                #h(1fr)
+                #text(fill: ovgu-blue, size: 1em)[*#utils.current-section*]
+              ]
             ]
         } else { 
             strong("Missing Headline")
@@ -174,13 +165,35 @@
         set align(bottom)
         
         text(fill: m-dark-teal, m-footer.display())
-        // h(1fr)
-        
-        // counter("total_slide_count").update(n => n + 1)
-        // text(fill: m-dark-teal)[
-        //   #logic.logical-slide.display() / #utils.last-slide-number
-        // ]
     }
+
+    // Applies a similar theme with the ovgu colors using the tmTheme format.
+    // It is very limited; using Typst's own highlighting might be more expressive.
+    set raw(theme: "ovgu.tmTheme")
+    show raw: set text(font: "Inconsolata")
+    show raw: set par(leading: 0.75em)
+
+    show raw.where(block: true): r => {
+      show raw.line: l => {
+        box(table(
+          columns: (-1.25em, 100%),
+          stroke: 0pt,
+          inset: 0em,
+          column-gutter: 1em,
+          align: (x, y) => if x == 0 { right } else { left },
+          text(fill: ovgu-darkgray, str(l.number)),
+          l.body,
+        ))
+      }
+
+      set align(left)
+      rect(width: 100%, stroke: gray + 0.5pt, inset: 0.75em, r)
+    }
+
+    // Display supplement in bold.
+    show figure.caption: c => [
+      *#c.supplement #counter(figure.where(kind: c.kind)).display(c.numbering)#c.separator*#c.body
+    ]
 
     set page(
         header: header,
@@ -200,22 +213,14 @@
 }
 
 #let outline-slide = slide(title: "Outline", show-footer: false)[
-  #set enum(numbering: n => [], tight: false, spacing: 1fr)
+  #set enum(numbering: n => [], tight: false, spacing: 20%)
   #utils.polylux-outline()
 ]
 
-#let s(t: none, ns: none, body) = slide(title: t, new-section: ns, body)
-// #let new-section(title) = [
-//     #slide(title: "Outline")[
-//       // Disable numbering for outline.
-//       #set enum(numbering: n => [], tight: false, spacing: 1fr)
-//       #show enum.item.where(body: [#title]): set text(red)
-//       #utils.polylux-outline()
-//   ]
-// ]
-#let section(name) = {
-  utils.register-section(name)
-}
+#let bib-slide(title: "References") = slide(title: title, show-footer: false, show-current-section: false)[
+  #bibliography("../bibliography/report.bib", style: "../bibliography/apalike.csl", title: none, full: true)
+]
 
-#let parcio-list = list.with(marker: [▪], indent: 2pt)
+#let s(t: none, ns: none, body) = slide(title: t, new-section: ns, body)
+
 
