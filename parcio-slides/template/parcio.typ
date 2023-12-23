@@ -16,41 +16,19 @@
 
 #let m-footer = state("m-footer", [])
 #let m-cell = block.with(width: 100%, height: 120%, above: 0pt, below: 0pt, breakable: false)
+#let m-pages = counter("m-page")
 
-#let parcio-table(columns, rows, ..tablec) = {
-  let header-data = tablec.pos().slice(0, columns)
-  let rest = tablec.pos().slice(columns)
-
-  table(
-    columns: 1,
-    stroke: none,
-    style(
-      styles => {
-        let header = table(columns: columns, rows: 1, stroke: 0.5pt, align: center, ..header-data)
-        let hw = measure(header, styles).width / columns
-
-        header
-        v(-1em)
-        tablex(
-          columns: (hw,) * columns,
-          rows: rows - 1,
-          stroke: 0.5pt,
-          align: center,
-          auto-hlines: false,
-          hlinex(),
-          ..rest,
-          hlinex(),
-        )
-      },
-    ),
+#let m-progress-bar = locate(loc => {
+  let ratio = m-pages.at(loc).first() / m-pages.final(loc).first()
+  grid(
+    columns: (ratio * 100%, 1fr),
+    m-cell(fill: ovgu-purple),
+    m-cell(fill: m-lighter-brown),
   )
-}
+})
 
-// TODO box.
-#let todo = rect.with(fill: ovgu-orange, stroke: black + 0.5pt, radius: 0.25em, width: 100%)
-
-// Start of theme rules.
-#let parcio-theme(aspect-ratio: "16-9", footer: [], body) = {
+// --- THEMING: Start of theme rules. ---
+#let parcio-theme(aspect-ratio: "16-9", body) = {
   set page(
     paper: "presentation-" + aspect-ratio,
     fill: extra-light-gray,
@@ -71,26 +49,29 @@
     }
   }
 
+  set list(indent: 20pt)
   set footnote.entry(
     indent: 2.5em,
     separator: line(start: (2em, 0em), end: (40%, 0em), stroke: 0.5pt),
   )
 
-  set list(indent: 20pt)
-  m-footer.update(footer)
-
   body
 }
 
-#let m-progress-bar = utils.polylux-progress(ratio => {
-  grid(
-    columns: (ratio * 100%, 1fr),
-    m-cell(fill: ovgu-purple),
-    m-cell(fill: m-lighter-brown),
-  )
-})
-
-#let title-slide(title: [], subtitle: none, author: (:), date: none, extra: none) = {
+// Declare your title slide! OvGU logo to the right.
+//
+// title: Your presentation title.
+// subtitle: (Optional) subtitle for more info.
+// author: Consists of author.name and author.mail.
+// date: (Optional) date of the presentation.
+// extra: (Optional) info below the date, like your faculty.
+#let title-slide(
+  title: [], 
+  subtitle: none, 
+  author: (:), 
+  date: none, 
+  extra: none,
+) = {
   let content = {
     set text(fill: m-dark-teal)
     show raw: set text(font: "Inconsolata", 1.15em)
@@ -129,28 +110,45 @@
   }
 
   m-footer.update(
-    [#author.name#h(1fr)#title#h(1fr)#logic.logical-slide.display() / #utils.last-slide-number],
+    grid(columns: 3 * (1fr,), 
+    align(left, author.name), 
+    align(center, title), 
+    align(right)[#m-pages.display("1 / 1", both: true)]),
   )
   polylux-slide(content)
 }
 
+// Basic slide function.
+//
+// title: (Optional) title of the slide, will be shown on the left in the header.
+// new-section: (Optional) marks a new topic, adds it to the outline & on the right in the header.
+// show-current-section: (default: true) if the current section should be displayed.
+// show-footer: (default: true): if the footer should be displayed.
 #let slide(
   title: none,
   new-section: none,
   show-current-section: true,
   show-footer: true,
+  _last: false,
   body,
 ) = {
+  // Define header: [Subsection] --- [Section], incl. progress bar.
   let header = {
     set align(top)
     if title != none {
+      // Register a new section if given.
       if new-section != none {
         utils.register-section(new-section)
       }
 
+      // Step page counter when this is not set.
+      // ONLY for special slides like outline or references.
+      if not _last {
+        counter("m-page").step()
+      }
+
       show: m-cell.with(fill: ovgu-lightgray, inset: 1em)
-      set align(horizon)
-      [
+      align(horizon)[
         #text(fill: ovgu-blue, size: 1.1em)[*#title*]
         #if show-current-section [
           #h(1fr)
@@ -164,6 +162,7 @@
     block(height: 1pt, width: 100%, spacing: 0pt, m-progress-bar)
   }
 
+  // Define footer: [author] - [title] - [page / total]
   let footer = if show-footer {
     show: pad.with(bottom: .25em, rest: 0.5em)
     set text(size: 0.7em)
@@ -178,6 +177,7 @@
   show raw: set text(font: "Inconsolata", 1.1em)
   show raw: set par(leading: 0.75em)
 
+  // Add line numbers to code block.
   show raw.where(block: true): r => {
     show raw.line: l => {
       box(table(
@@ -217,22 +217,74 @@
   polylux-slide(content)
 }
 
+// --- HELPER FUNCTIONS ---
+
+// Simple table design, similar to the existing ParCIO template.
+#let parcio-table(columns, rows, ..tablec) = {
+  let header-data = tablec.pos().slice(0, columns)
+  let rest = tablec.pos().slice(columns)
+
+  table(
+    columns: 1,
+    stroke: none,
+    style(
+      styles => {
+        let header = table(columns: columns, rows: 1, stroke: 0.5pt, align: center, ..header-data)
+        let hw = measure(header, styles).width / columns
+
+        header
+        v(-1em)
+        tablex(
+          columns: (hw,) * columns, 
+          rows: rows - 1, 
+          stroke: 0.5pt, 
+          align: center, 
+          auto-hlines: false,
+          // Start of content.
+          hlinex(),
+          ..rest,
+          hlinex(),
+          // End of content.
+        )
+      },
+    ),
+  )
+}
+
+// Simple orange TODO box.
+#let todo = rect.with(fill: ovgu-orange, stroke: black + 0.5pt, radius: 0.25em, width: 100%)
+
+// Shorthand for `slide` with shorthands for `title` and `new-section`.
+#let s(t: none, ns: none, body) = slide(title: t, new-section: ns, body)
+
+// Creates a clickable outline with a customizable title
+// for each `new-section` entry.
 #let outline-slide(title: "Outline") = {
-  logic.logical-slide.update(0)
-  slide(title: title, show-footer: false)[
+  slide(title: title, show-footer: false, _last: true)[
     #set enum(numbering: n => [], tight: false, spacing: 20%)
     #utils.polylux-outline()
   ]
 }
 
-#let bib-slide(title: "References") = slide(title: title, show-footer: false, show-current-section: false)[
+// Creates a list of all references using the "apalike" style.
+#let bib-slide(title: "References", bib) = slide(title: title, show-footer: false, show-current-section: false, _last: true)[
   #bibliography(
-    "../bibliography/report.bib",
+    bib,
     style: "../bibliography/apalike.csl",
     title: none,
     full: true,
   )
 ]
 
-#let s(t: none, ns: none, body) = slide(title: t, new-section: ns, body)
+// Create basic subfigure grid, see main file for usage.
+#let subfigure(caption, lbl: "", ..figs) = {
+  let fig-cols = figs.pos().len()
+  
+  set figure(kind: "sub", supplement: none, numbering: "(a)")
+  show figure.where(kind: "sub"): set figure.caption(separator: " ")
+
+  [
+    #figure(caption: caption, numbering: "1", supplement: "Figure", kind: figure, grid(columns: fig-cols, ..figs))#label(lbl)
+  ]
+}
 

@@ -1,6 +1,6 @@
 #import "template/parcio.typ": *
-#import themes.metropolis: metropolis-outline
 
+// See template file > Helper Functions for extra stuff!
 #show: parcio-theme.with()
 #set text(size: 20pt)
 
@@ -23,27 +23,18 @@
     https://github.com/xkevio/parcio-typst and consists of Sections 1 to 4.
 ]
 
-// TODO: Proper subfigure counter.
 #slide(
   title: "Figures",
 )[
-  #figure(
-    caption: "Caption",
-  )[
-    #grid(
-      columns: 2,
-    )[
-      #set figure.caption(separator: " ")
-      #figure(caption: "Left", kind: "sub", supplement: none, numbering: "(a)")[
-        #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
-      ]<fig1a>
-    ][
-      #set figure.caption(separator: " ")
-      #figure(caption: "Right", kind: "sub", supplement: none, numbering: "(a)")[
-        #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
-      ]<fig1b>
-    ]
-  ]<fig1>
+  #subfigure("Test", lbl: "fig1")[
+    #figure(caption: "Left", kind: "sub", supplement: none, numbering: "(a)")[
+      #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
+    ]<fig1a>
+  ][
+    #figure(caption: "Right", kind: "sub", supplement: none, numbering: "(a)")[
+      #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
+    ]<fig1b>
+  ]
   \
   - You can refer to the subfigures (Figures @fig1a[1#h(-0.3em)] and
     @fig1b[1#h(-0.3em)]) or the figure (@fig1).
@@ -57,6 +48,8 @@
 ]
 
 #slide(title: "Tables")[
+  // You can also create normal tables with `#table`,
+  // this one just has some styling preapplied.
   #figure(caption: "Caption", parcio-table(
     3, 3,
     [*Header 1*], [*Header 2*], [*Header 3*],
@@ -116,9 +109,9 @@
   ]
 ]
 
-#s(t: "Todos", ns: "Conclusion")[
+#slide(title: "Todos", new-section: "Conclusion")[
   #todo("FIXME")
   #lorem(125)
 ]
 
-#bib-slide()
+#bib-slide("../bibliography/report.bib")
