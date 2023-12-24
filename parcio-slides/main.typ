@@ -27,11 +27,11 @@
   title: "Figures",
 )[
   #subfigure("Test", lbl: "fig1")[
-    #figure(caption: "Left", kind: "sub", supplement: none, numbering: "(a)")[
+    #figure(caption: "Left")[
       #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
     ]<fig1a>
   ][
-    #figure(caption: "Right", kind: "sub", supplement: none, numbering: "(a)")[
+    #figure(caption: "Right")[
       #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
     ]<fig1b>
   ]
