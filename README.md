@@ -4,4 +4,5 @@
 - *(If installed locally)* Compile the document with `typst c main.typ`
 
 `parcio-thesis` is a more recent attempt at porting the template.\
-`parcio-report` is somewhat outdated.
+`parcio-slides` ports the presentation (beamer) slides.\
+`parcio-report` is somewhat outdated (will be updated soon).
