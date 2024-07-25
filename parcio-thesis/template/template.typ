@@ -1,6 +1,5 @@
-#import "@preview/codelst:1.0.0": sourcecode
-#import "@preview/drafting:0.1.0": margin-note, set-page-properties
-#import "@preview/tablex:0.0.5": *
+#import "@preview/drafting:0.2.0": margin-note, set-page-properties
+#import "@preview/subpar:0.1.1"
 
 #let ovgu-blue = rgb("#0068B4")
 #let ovgu-darkgray = rgb("#606060")
@@ -30,56 +29,39 @@
 
 // Like \section* (unnumbered level 2 heading, does not appear in ToC).
 #let section = heading.with(level: 2, outlined: false, numbering: none)
-
-// Styled codeblock with line numbers, uses the codelst package.
-#let src = sourcecode.with(
-  gutter: 0em,
-  frame: block.with(
-    stroke: 0.5pt + gray, 
-    inset: (x: 0.5em, y: 0.5em), 
-    width: 100%
-  ),
-  numbers-style: n => {
-    set text(fill: ovgu-darkgray, font: "Inconsolata", 0.95 * 12pt)
-    h(-2.5em) + n
-  }
+// Neat inline-section in smallcaps and sans font.
+#let inline-section(title) = smallcaps[*#text(font: "Libertinus Sans", title)*] 
+// Fully empty page, no page numbering.
+#let empty-page = page([], footer: [])
+// Subfigures.
+#let subfigure = subpar.grid.with(
+  numbering: (num) => {
+    numbering("1.1", counter(heading).get().first(), num)
+  },
+  numbering-sub-ref: (sup, sub) => { 
+    numbering("1.1a", counter(heading).get().first(), sup, sub)
+  },
 )
 
-// ----------------------
-//   CUSTOM PARCIO TABLE
-//  (uses tablex & nested tables)
-// ----------------------
-#let parcio-table(columns, rows, ..tablec) = {
-  let header-data = tablec.pos().slice(0, columns)
-  let rest = tablec.pos().slice(columns)
-  
-  table(columns: 1, stroke: none,
-    style(styles => {
-      let header = table(columns: columns, rows: 1, stroke: 0.5pt, align: center,
-        ..header-data
-      )
-      let hw = measure(header, styles).width / columns
-
-      header
-      v(-1em)
-      tablex(columns: (hw,) * columns, rows: rows - 1, stroke: 0.5pt, align: (x, y) => 
-          (left, center, right).at(x),
-          auto-hlines: false,
-          hlinex(),
-          ..rest,
-          hlinex()
-        )
-    })
+// Custom ParCIO table as illustrated in the template.
+#let parcio-table(max-rows, ..args) = table(
+  ..args,
+  row-gutter: (2.5pt, auto),
+  stroke: (x, y) => (
+    left: 0.5pt,
+    right: 0.5pt,
+    top: if y <= 1 { 0.5pt },
+    bottom: if y == 0 or y == max-rows - 1 { 0.5pt }
   )
-}
+)
 
 // ----------------------
 //   ACTUAL TEMPLATE
 // ----------------------
-#let project(title, author, abstract, thesis-type: "Bachelor/Master", reviewers: (), body) = {
+#let project(title, author, abstract, thesis-type: "Bachelor/Master", reviewers: (), lang: "en", body) = {
   set document(title: title, author: author.name)
   set page("a4", margin: 2.5cm, number-align: right, numbering: "i", footer: [])
-  set text(font: "Libertinus Serif", 12pt, lang: "en")
+  set text(font: "Libertinus Serif", 12pt, lang: lang)
   set heading(numbering: "1.1.")
   set par(justify: true)
   set math.equation(numbering: "(1)")
@@ -94,26 +76,44 @@
     }
   }
 
+  // Enable heading specific figure numbering and increase spacing.
+  set figure(numbering: n => numbering("1.1", counter(heading).get().first(), n), gap: 1em)
+  show figure: set block(spacing: 1.5em)
+
+  // Add final period after fig-numbering (1.1 -> 1.1.).
+  show figure.caption: c => {
+    grid(
+      columns: 2,
+      column-gutter: 4pt,
+      align(top)[#c.supplement #c.counter.display(c.numbering).#c.separator],
+      align(left, c.body),
+    )
+  }
+
   // Create the "Chapter X." heading for every level 1 heading that is numbered.
-  // Also resets figure counters so they stay chapter-specific.
   show heading.where(level: 1): h => {
-    set text(huge)
+    set text(huge, font: "Libertinus Sans")
+
     if h.numbering != none {
       pagebreak(weak: true)
+      v(2.3cm)
+
+      // Reset figure counters:
+      counter(figure.where(kind: image)).update(0)
+      counter(figure.where(kind: table)).update(0)
+      counter(figure.where(kind: raw)).update(0)
+
       if h.body == [Appendix] {
-        counter(heading.where(level: 1)).update(1)
-        [Appendix #counter(heading.where(level: 1)).display(h.numbering)]
+        counter(heading).update(1)
+        [Appendix #counter(heading).display(h.numbering)]
       } else {
         [Chapter ] + counter(heading.where(level: 1)).display()
       }
       [\ #v(0.2em) #h.body]
     } else {
+      v(2.3cm)
       h
     }
-
-    counter(figure.where(kind: image)).update(0)
-    counter(figure.where(kind: table)).update(0)
-    counter(figure.where(kind: raw)).update(0)
   }
 
   show heading.where(level: 2): h => {
@@ -124,45 +124,15 @@
     }
   }
 
-  // Make figures use "<chapter>.<num>." numbering.
-  set figure(numbering: n => locate(loc => {
-    let headings = query(heading.where(level: 1).before(loc), loc).last()
-    let chapter = counter(heading.where(level: 1)).display(headings.numbering)
-    [#chapter#n.]
-  }))
-
-  // Make references to figures use "<chapter>.<num>" numbering.
-  // (without period at the end, will be easier in the future)
-  show ref: r => {
-    let elem = r.element
-    if elem != none and elem.func() == figure {
-      let chapter = counter(heading.where(level: 1)).display()
-      let n = if elem.kind != "sub" { 
-        elem.counter.at(elem.location()).at(0)
-      } else {
-        let nn = counter(
-          figure.where(kind: image)
-            .or(figure.where(kind: table))
-            .or(figure.where(kind: raw)))
-            .at(elem.location()).at(0)
-
-        let sub-counter = numbering("a", counter(figure.where(kind: "sub")).at(elem.location()).at(0))
-        [#nn#sub-counter]
-      }
-
-      if elem.kind == image or elem.kind == table or elem.kind == raw or elem.kind == "sub" {
-         return [#elem.supplement #link(elem.location())[#chapter#n]]
-      }
-    }
-
-    r
-  }
-
   // Make @heading automatically say "Chapter XYZ" instead of "Section XYZ",
   // unless we want to manually specify it.
   set ref(supplement: it => {
-    if it.func() == heading.where(supplement: none) {
-      "Chapter"
+    if it.func() == heading {
+      if it.level > 1 {
+        "Section"
+      } else {
+        "Chapter"
+      }
     } else {
       it.supplement
     }
@@ -180,11 +150,12 @@
     let cc = it.body.children.first().text
     
     box(
-      grid(columns: (auto, 1fr, auto),
-        h(1.5em) + link(it.element.location())[#cc#h(1em)#it.element.body],
+      grid(
+        columns: (auto, 1fr, auto),
+        h(1.5em + ((it.level - 2) * 2.5em)) + link(it.element.location())[#cc#h(1em)#it.element.body],
         it.fill,
-        box(width: 1.5em) + it.page
-      )
+        box(width: 1.5em) + it.page,
+      ),
     )
   }
 
@@ -200,31 +171,39 @@
     }
     
     v(0.1em)
-    box(
-      grid(columns: 3,
-        strong(link(it.element.location())[#cc #h(0.5em) #it.element.body]),
-        h(1fr),
-        strong(it.page)
-      )
-    )
+    box(grid(
+      columns: (auto, 1fr, auto),
+      strong(link(it.element.location())[#cc #h(0.5em) #it.element.body]),
+      h(1fr),
+      strong(it.page),
+    ))
   }
 
-  // Applies a similar theme with the ovgu colors using the tmTheme format.
-  // It is very limited; using Typst's own highlighting might be more expressive.
-  set raw(theme: "ovgu.tmTheme")
   show raw: set text(font: "Inconsolata")
-
-  // TODO (make better): Custom subfigure counter ((a), (b), ...).
-  show figure.where(kind: "sub"): f => {
-    f.body
-    v(-0.65em)
-    counter(figure.where(kind: "sub")).display("(a)") + " " + f.caption
+  show raw.where(block: true): r => {
+    set par(justify: false)
+    show raw.line: l => {
+      box(table(
+        columns: (-1.25em, 100%),
+        stroke: 0pt,
+        inset: 0em,
+        column-gutter: 1em,
+        align: (x, y) => if x == 0 { right } else { left },
+        text(fill: ovgu-darkgray, str(l.number)),
+        l.body,
+      ))
+    }
+    
+    set align(left)
+    rect(width: 100%, stroke: gray + 0.5pt, inset: 0.75em, r)
   }
   
-  show heading: set text(font: "Libertinus Sans", Large)
-  show heading: it => it + v(1em)
-
+  show heading.where(level: 2): set text(font: "Libertinus Sans", Large)
+  show heading.where(level: 3): set text(font: "Libertinus Sans", Large)
+  show heading: it => it + v(0.69em)
+  
   set footnote.entry(separator: line(length: 40%, stroke: 0.5pt))
+  set list(marker: (sym.bullet, "◦"))
 
   // STYLIZING TITLE PAGE AND ABSTRACT BEGINS HERE:
   // Can't import pdf yet (svg works).
@@ -276,7 +255,7 @@
   
   show raw: set text(12pt * 0.95)
   pagebreak(to: "odd")
-  set-page-properties(margin-left: 2.5cm, margin-right: 2.75cm)
+  set-page-properties()
 
   v(-8.5em)
   align(center + horizon)[
