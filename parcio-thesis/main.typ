@@ -1,4 +1,5 @@
 #import "template/template.typ": *
+#import "template/parcio-bib.typ": parcio-bib
 
 // Title, Author, Abstract,
 // optional: thesis-type to specify "Bachelor", "Master", "PhD", etc.,
@@ -42,7 +43,7 @@
 
 #empty-page
 
-#bibliography("bibliography/report.bib", style: "bibliography/apalike.csl")
+#parcio-bib("bibliography/report.bib", style: "bibliography/apalike.csl")
 
 #empty-page
 
