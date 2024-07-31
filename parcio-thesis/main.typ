@@ -43,7 +43,7 @@
 
 #empty-page
 
-#parcio-bib("bibliography/report.bib", style: "bibliography/apalike.csl")
+#parcio-bib("bibliography/report.bib", style: "apa")
 
 #empty-page
 

@@ -39,6 +39,9 @@
   show bibliography: none
   bibliography(..args)
 
+  let title = args.named().at("title", default: [Bibliography])
+  heading(numbering: none, title)
+
   let bib-file = args.pos().first()
   let citations = query(ref)
     .filter(r => r.has("citation") and r.element == none)
