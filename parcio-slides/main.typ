@@ -26,18 +26,20 @@
 #slide(
   title: "Figures",
 )[
-  #subfigure("Test", lbl: "fig1")[
-    #figure(caption: "Left")[
+  #subfigure(
+    caption: "Test", 
+    columns: 2,
+    label: <fig1>,
+    figure(caption: "Left")[
       #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
-    ]<fig1a>
-  ][
-    #figure(caption: "Right")[
+    ],<fig1a>,
+    figure(caption: "Right")[
       #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
-    ]<fig1b>
-  ]
+    ],<fig1b>
+  )
   \
-  - You can refer to the subfigures (Figures @fig1a[1#h(-0.3em)] and
-    @fig1b[1#h(-0.3em)]) or the figure (@fig1).
+  - You can refer to the subfigures (Figures @fig1a[] and
+    @fig1b[]) or the figure (@fig1).
 ]
 
 #slide(
@@ -50,8 +52,7 @@
 #slide(title: "Tables")[
   // You can also create normal tables with `#table`,
   // this one just has some styling preapplied.
-  #figure(caption: "Caption", parcio-table(
-    3, 3,
+  #figure(caption: "Caption", parcio-table(3, columns: 3,
     [*Header 1*], [*Header 2*], [*Header 3*],
     [Row 1], [Row 1], [Row 1],
     [Row 2], [Row 2], [Row 2],
@@ -67,7 +68,7 @@
 
   \
 
-  #figure(caption: "Lots of fun math!")[
+  #figure(caption: "Lots of fun math!", kind: math.equation)[
     $&sum_(k = 0)^n pi dot k \
     <=> &sum_(k = 1)^n pi dot k \
     <=> &sum_(k = 2)^n (pi dot k) + pi

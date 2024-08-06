@@ -1,5 +1,5 @@
 #import "@preview/polylux:0.3.1": *
-#import "@preview/tablex:0.0.7": *
+#import "@preview/subpar:0.1.1"
 
 #let extra-light-gray = rgb("#FFFFFF")
 #let m-dark-teal = rgb("#23373b")
@@ -18,14 +18,14 @@
 #let m-cell = block.with(width: 100%, height: 120%, above: 0pt, below: 0pt, breakable: false)
 #let m-pages = counter("m-page")
 
-#let m-progress-bar = locate(loc => {
-  let ratio = m-pages.at(loc).first() / m-pages.final(loc).first()
+#let m-progress-bar = context {
+  let ratio = m-pages.get().first() / m-pages.final().first()
   grid(
     columns: (ratio * 100%, 1fr),
     m-cell(fill: ovgu-purple),
     m-cell(fill: m-lighter-brown),
   )
-})
+}
 
 // --- THEMING: Start of theme rules. ---
 #let parcio-theme(aspect-ratio: "16-9", body) = {
@@ -81,12 +81,12 @@
     v(-1em)
     block(width: 100%, inset: 2.5em, height: 100%, {
       table(
-        columns: (1fr, 1fr),
+        columns: (auto, 1fr),
         align: (left, right),
         stroke: none,
         inset: 0pt,
         text(size: 1.3em, strong(title) + v(-0.25em) + text(0.85em, subtitle)),
-        image("ovgu.svg", width: 75%),
+        image("ovgu.svg", width: 9.8cm),
       )
 
       v(-0.5em)
@@ -217,39 +217,23 @@
   polylux-slide(content)
 }
 
-// --- HELPER FUNCTIONS ---
+// ------ HELPER FUNCTIONS ------
 
 // Simple table design, similar to the existing ParCIO template.
-#let parcio-table(columns, rows, ..tablec) = {
-  let header-data = tablec.pos().slice(0, columns)
-  let rest = tablec.pos().slice(columns)
-
-  table(
-    columns: 1,
-    stroke: none,
-    style(
-      styles => {
-        let header = table(columns: columns, rows: 1, stroke: 0.5pt, align: center, ..header-data)
-        let hw = measure(header, styles).width / columns
-
-        header
-        v(-1em)
-        tablex(
-          columns: (hw,) * columns, 
-          rows: rows - 1, 
-          stroke: 0.5pt, 
-          align: center, 
-          auto-hlines: false,
-          // Start of content.
-          hlinex(),
-          ..rest,
-          hlinex(),
-          // End of content.
-        )
-      },
-    ),
+// Custom ParCIO table as illustrated in the template.
+#let parcio-table(max-rows, ..args) = table(
+  ..args,
+  row-gutter: (2.5pt, auto),
+  stroke: (x, y) => (
+    left: 0.5pt,
+    right: 0.5pt,
+    top: if y <= 1 { 0.5pt },
+    bottom: if y == 0 or y == max-rows - 1 { 0.5pt }
   )
-}
+)
+
+// Subfigures.
+#let subfigure = subpar.grid
 
 // Simple orange TODO box.
 #let todo = rect.with(fill: ovgu-orange, stroke: black + 0.5pt, radius: 0.25em, width: 100%)
@@ -275,16 +259,4 @@
     full: true,
   )
 ]
-
-// Create basic subfigure grid, see main file for usage.
-#let subfigure(caption, lbl: "", ..figs) = {
-  let fig-cols = figs.pos().len()
-  
-  set figure(kind: "sub", supplement: none, numbering: "(a)")
-  show figure.where(kind: "sub"): set figure.caption(separator: " ")
-
-  [
-    #figure(caption: caption, numbering: "1", supplement: "Figure", kind: figure, grid(columns: fig-cols, ..figs))#label(lbl)
-  ]
-}
 
