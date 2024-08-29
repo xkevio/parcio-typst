@@ -1,5 +1,11 @@
 #let _bib-wasm = plugin("./hello.wasm")
 
+#let _translation-file = toml("translations.toml")
+#let translations(lang) = _translation-file.at(
+  lang, 
+  default: _translation-file.at(_translation-file.default-lang)
+)
+
 #let _extract-authors(bib-file, key) = {
   let bib-content = bytes(read(bib-file))
   let key-bytes = bytes(key)
@@ -22,15 +28,19 @@
   let locs = cite-group.at(str(cc))
     .map(l => link(l, str(counter(page).at(l).first())))
     .dedup(key: l => l.body)
+
+  let cited-on = translations(text.lang).bibliography.cited-on-page
+  let cited-on-plural = translations(text.lang).bibliography.cited-on-pages
+  let and-join = translations(text.lang).bibliography.join
   
   text(rgb("#606060"))[
     #if locs.len() == 1 [
-      (Cited on page #locs.first())
+      (#cited-on #locs.first())
     ] else if locs.len() == 2 [
-      (Cited on pages #locs.at(0) and #locs.at(1))
+      (#cited-on-plural #locs.at(0) and #locs.at(1))
     ] else [
-      #let loc-str = locs.join(", ", last: " and ")
-      (Cited on pages #loc-str)
+      #let loc-str = locs.join(", ", last: " " + and-join + " ")
+      (#cited-on-plural #loc-str)
     ]
   ]
 }
@@ -39,7 +49,10 @@
   show bibliography: none
   bibliography(..args)
 
-  let title = args.named().at("title", default: [Bibliography])
+  let title = args.named().at(
+    "title", 
+    default: translations(text.lang).bibliography.bibliography
+  )
   heading(numbering: none, title)
 
   let bib-file = args.pos().first()

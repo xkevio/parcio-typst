@@ -4,6 +4,7 @@
 // Title, Author, Abstract,
 // optional: thesis-type to specify "Bachelor", "Master", "PhD", etc.,
 // optional: reviewers to specify "first-reviewer", "second-reviewer" and (if needed) "supervisor".
+// optional: date to specify your deadline (default: datetime.today())
 // optional: lang to specify the language for text features like "" or hyphenation (specify as ISO 639-1/2/3 code, default: "en")
 #show: project.with(
   "Title", 

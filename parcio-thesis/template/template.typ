@@ -58,13 +58,28 @@
 // ----------------------
 //   ACTUAL TEMPLATE
 // ----------------------
-#let project(title, author, abstract, thesis-type: "Bachelor/Master", reviewers: (), lang: "en", body) = {
+#let project(
+  title, 
+  author, 
+  abstract, 
+  thesis-type: "Bachelor/Master", 
+  reviewers: (), 
+  date: datetime.today(),
+  lang: "en", 
+  body
+) = {
   set document(title: title, author: author.name)
   set page("a4", margin: 2.5cm, number-align: right, numbering: "i", footer: [])
   set text(font: "Libertinus Serif", 12pt, lang: lang)
   set heading(numbering: "1.1.")
   set par(justify: true)
   set math.equation(numbering: "(1)")
+
+  let _translation-file = toml("translations.toml")
+  let translations = _translation-file.at(
+    lang, 
+    default: _translation-file.at(_translation-file.default-lang)
+  )
 
   // Make URLs use monospaced font.
   show link: l => {
@@ -107,7 +122,7 @@
         counter(heading).update(1)
         [Appendix #counter(heading).display(h.numbering)]
       } else {
-        [Chapter ] + counter(heading.where(level: 1)).display()
+        translations.chapter + " " + counter(heading.where(level: 1)).display()
       }
       [\ #v(0.2em) #h.body]
     } else {
@@ -129,9 +144,9 @@
   set ref(supplement: it => {
     if it.func() == heading {
       if it.level > 1 {
-        "Section"
+        translations.section
       } else {
-        "Chapter"
+        translations.chapter
       }
     } else {
       it.supplement
@@ -139,7 +154,7 @@
   })
 
   // Customize ToC to look like template.
-  set outline(fill: repeat[~~.], indent: none)
+  set outline(fill: repeat[~~.], indent: none, title: translations.contents)
   show outline: o => {
     show heading: pad.with(bottom: 1em)
     o
@@ -205,6 +220,8 @@
   set footnote.entry(separator: line(length: 40%, stroke: 0.5pt))
   set list(marker: (sym.bullet, "◦"))
 
+  let (first-reviewer, second-reviewer, supervisor) = translations.title-page
+
   // STYLIZING TITLE PAGE AND ABSTRACT BEGINS HERE:
   // Can't import pdf yet (svg works).
   align(center)[
@@ -214,9 +231,12 @@
   v(4.75em)
 
   align(center)[
-    #text(Large, font: "Libertinus Serif")[*#thesis-type Thesis*]
+    #text(Large, font: "Libertinus Serif")[*#thesis-type #translations.thesis*]
     #v(2.5em)
-    #text(huge, font: "Libertinus Sans")[*#title*]
+    #text(huge, font: "Libertinus Sans")[
+      #set par(justify: false)
+      *#title*
+    ]
     #v(1.25em)
 
     #set text(Large)
@@ -227,27 +247,30 @@
     ]
 
     #v(0.5em)
-    #text(Large)[#datetime.today().display("[month repr:long] [day], [year]")]
+    #text(Large)[
+      #show regex("[a-zA-Z]+"): r => translations.date.months.at(date.month() - 1)
+      #date.display(translations.date.date-format)
+    ]
     #v(5.35em)
 
     // first and second reviewer are required, supervisor is optional.
     #if reviewers.len() >= 2 {
-      let first-reviewer = reviewers.first()
-      let second-reviewer = reviewers.at(1)
-      let supervisor = reviewers.at(2, default: none)
+      let first-reviewer-name = reviewers.first()
+      let second-reviewer-name = reviewers.at(1)
+      let supervisor-name = reviewers.at(2, default: none)
 
       [
-        First Reviewer:\
-        #first-reviewer\ \
+        #first-reviewer:\
+        #first-reviewer-name\ \
         #v(-1.5em)
     
-        Second Reviewer:\
-        #second-reviewer\ \
+        #second-reviewer:\
+        #second-reviewer-name\ \
         #v(-1.5em)
 
-        #if supervisor != none [
-          Supervisor:\
-          #supervisor
+        #if supervisor-name != none [
+          #supervisor:\
+          #supervisor-name
         ]
       ]
     }
