@@ -1,5 +1,6 @@
 #import "@preview/drafting:0.2.0": margin-note, set-page-properties
 #import "@preview/subpar:0.1.1"
+#import "parcio-bib.typ": is-parcio-bib
 
 #let ovgu-blue = rgb("#0068B4")
 #let ovgu-darkgray = rgb("#606060")
@@ -152,6 +153,16 @@
       it.supplement
     }
   })
+
+  // Redirect bib-citations to the manually inserted ones.
+  show cite: c => {
+    if is-parcio-bib.get() and not str(c.key).starts-with("_") {
+      show regex(".+"): x => link(label("_" + str(c.key)), x)
+      c
+    } else {
+      c
+    }
+  }
 
   // Customize ToC to look like template.
   set outline(fill: repeat[~~.], indent: none, title: translations.contents)

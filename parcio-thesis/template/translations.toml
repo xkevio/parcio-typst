@@ -13,7 +13,7 @@ second-reviewer = "Zweitgutachter"
 supervisor = "Betreuer"
 
 [de.bibliography]
-bibliography = "Literaturverzeichnis"
+bibliography = "Quellenverzeichnis"
 cited-on-page = "Zitiert auf Seite"
 cited-on-pages = "Zitiert auf Seiten"
 join = "und"

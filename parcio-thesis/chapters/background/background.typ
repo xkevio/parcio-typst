@@ -5,7 +5,7 @@
 _In this chapter, ..._
 
 == Citations
-You can comfortably reference literature @DuweLMSF0B020.#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/.
+You can comfortably reference literature @DuweLMSF0B020.#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/. @girshick_fast_2015
 
 == Tables
 
