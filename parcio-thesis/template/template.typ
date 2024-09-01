@@ -83,13 +83,9 @@
   )
 
   // Make URLs use monospaced font.
-  show link: l => {
-    if type(l.dest) == "string" {
-      set text(font: "Inconsolata", 12pt * 0.95)
-      l
-    } else {
-      l
-    }
+  show link: it => {
+    set text(font: "Inconsolata", 12pt * 0.95) if type(it.dest) == str
+    it
   }
 
   // Enable heading specific figure numbering and increase spacing.
@@ -97,6 +93,7 @@
   show figure: set block(spacing: 1.5em)
 
   // Add final period after fig-numbering (1.1 -> 1.1.).
+  // Additionally, left align caption if it spans multiple lines.
   show figure.caption: c => {
     grid(
       columns: 2,
@@ -233,8 +230,8 @@
 
   let (first-reviewer, second-reviewer, supervisor) = translations.title-page
 
+  // -------------- TITLE PAGE -------------- //
   // STYLIZING TITLE PAGE AND ABSTRACT BEGINS HERE:
-  // Can't import pdf yet (svg works).
   align(center)[
     #image(alt: "Blue OVGU logo", width: 66%, "ovgu.svg")  
   ]

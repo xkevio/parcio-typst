@@ -17,7 +17,7 @@
   reviewers: ("Prof. Dr. Musterfrau", "Prof. Dr. Mustermann", "Dr. Evil")
 )
 
-// Set lower roman numbering for ToC and abstract (template hides numbering).
+// Set lower roman numbering for ToC and abstract.
 #set page(margin: 2.5cm, footer: none)
 #outline(depth: 3)
 
@@ -25,11 +25,9 @@
 
 // Set arabic numbering for everything else and reset page counter.
 #set page(numbering: "1", footer: context {
-  if calc.odd(counter(page).get().first()) {
-    align(right, counter(page).display("1"))
-  } else {
-    align(left, counter(page).display("1"))
-  }
+  let page-count = counter(page).get().first()
+  let page-align = if calc.odd(page-count) { right } else { left } 
+  align(page-align, counter(page).display("1"))
 })
 #counter(page).update(1)
 
