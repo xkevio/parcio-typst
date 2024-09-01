@@ -40,13 +40,9 @@
   set text(font: "Libertinus Sans")
 
   // Make URLs use monospaced font.
-  show link: l => {
-    if type(l.dest) == "string" {
-      set text(font: "Inconsolata", 0.9em)
-      l
-    } else {
-      l
-    }
+  show link: it => {
+    set text(font: "Inconsolata", 0.9em) if type(it.dest) == str
+    it
   }
 
   set list(indent: 20pt)
