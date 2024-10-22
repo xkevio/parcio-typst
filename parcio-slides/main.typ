@@ -52,10 +52,11 @@
 #slide(title: "Tables")[
   // You can also create normal tables with `#table`,
   // this one just has some styling preapplied.
-  #figure(caption: "Caption", parcio-table(3, columns: 3,
+  #figure(caption: "Caption", parcio-table(4, columns: 3,
     [*Header 1*], [*Header 2*], [*Header 3*],
     [Row 1], [Row 1], [Row 1],
     [Row 2], [Row 2], [Row 2],
+    [Row 3], [Row 3], [Row 3],
   ))<tbl>
 
   - You can also refer to tables (@tbl)

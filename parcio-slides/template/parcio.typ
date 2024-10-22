@@ -62,7 +62,8 @@
 // date: (Optional) date of the presentation.
 // extra: (Optional) info below the date, like your faculty.
 #let title-slide(
-  title: [], 
+  title: [],
+  short-title: none,
   subtitle: none, 
   author: (:), 
   date: none, 
@@ -108,8 +109,8 @@
   m-footer.update(
     grid(columns: 3 * (1fr,), 
     align(left, author.name), 
-    align(center, title), 
-    align(right)[#m-pages.display("1 / 1", both: true)]),
+    align(center, if short-title != none { short-title } else { title }), 
+    align(right)[#context m-pages.display("1 / 1", both: true)]),
   )
   polylux-slide(content)
 }
@@ -148,7 +149,7 @@
         #text(fill: ovgu-blue, size: 1.1em)[*#title*]
         #if show-current-section [
           #h(1fr)
-          #text(fill: ovgu-blue, size: 1em)[*#utils.current-section*]
+          #text(fill: ovgu-blue, size: 0.9em)[*#utils.current-section*]
         ]
       ]
     } else {
@@ -164,7 +165,7 @@
     set text(size: 0.7em)
     set align(bottom)
 
-    text(fill: m-dark-teal, m-footer.display())
+    text(fill: m-dark-teal, context m-footer.get())
   }
 
   // Applies a similar theme with the ovgu colors using the tmTheme format.
@@ -193,7 +194,7 @@
 
   // Display supplement in bold.
   show figure.caption: c => [
-    *#c.supplement #counter(figure.where(kind: c.kind)).display(c.numbering)#c.separator*#c.body
+    *#c.supplement #context counter(figure.where(kind: c.kind)).display(c.numbering)#c.separator*#c.body
   ]
 
   set page(
@@ -241,7 +242,7 @@
 // for each `new-section` entry.
 #let outline-slide(title: "Outline") = {
   slide(title: title, show-footer: false, _last: true)[
-    #set enum(numbering: n => [], tight: false, spacing: 20%)
+    #set enum(numbering: n => [], tight: false, spacing: 3.5em)
     #utils.polylux-outline()
   ]
 }
