@@ -1,4 +1,4 @@
-#import "../../template/template.typ": section
+#import "/parcio-thesis/src/parcio.typ": section
 
 = Evaluation<eval>
 _In this chapter, ..._ \ \

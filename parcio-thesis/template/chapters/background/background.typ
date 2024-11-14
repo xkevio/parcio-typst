@@ -1,11 +1,12 @@
-#import "../../template/template.typ": parcio-table, section
+#import "/parcio-thesis/src/parcio.typ": parcio-table, section
 
 = Background<bg>
 
 _In this chapter, ..._
 
 == Citations
-You can comfortably reference literature @DuweLMSF0B020.#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/. @girshick_fast_2015
+
+You can comfortably reference literature @DuweLMSF0B020.#footnote[This is a footnote.] BibTeX entries for a large number of publications can be found at https://dblp.org/.
 
 == Tables
 

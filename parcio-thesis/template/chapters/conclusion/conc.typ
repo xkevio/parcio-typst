@@ -1,4 +1,4 @@
-#import "../../template/template.typ": todo, section
+#import "/parcio-thesis/src/parcio.typ": todo, section
 
 = Conclusion<conc>
 _In this chapter, ..._\ \
