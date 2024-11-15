@@ -21,7 +21,7 @@
   ),
   abstract: include "chapters/abstract.typ",
   reviewers: ("Prof. Dr. Musterfrau", "Prof. Dr. Mustermann", "Dr. Evil"),
-  header-logo: image("images/ovgu-fin.svg", width: 66%)
+  header-logo: image("images/ovgu-fin.svg", width: 66%),
 )
 
 #show: roman-numbering.with(reset: false)

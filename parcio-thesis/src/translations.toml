@@ -5,7 +5,7 @@ default-lang = "en"
 contents = "Inhaltsverzeichnis"
 chapter = "Kapitel"
 section = "Sektion"
-thesis = "Arbeit"
+thesis = { value = "Arbeit", compound = true }
 
 [de.title-page]
 first-reviewer = "Erstgutachter"
@@ -28,7 +28,7 @@ months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August"
 contents = "Contents"
 chapter = "Chapter"
 section = "Section"
-thesis = "Thesis"
+thesis = { value = "Thesis", compound = false }
 
 [en.title-page]
 first-reviewer = "First Reviewer"

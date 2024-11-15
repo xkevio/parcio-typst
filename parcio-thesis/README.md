@@ -91,7 +91,7 @@ default-lang = "en"
 contents = "Inhaltsverzeichnis"
 chapter = "Kapitel"
 section = "Sektion"
-thesis = "Arbeit"
+thesis = { value = "Arbeit", compound = true }
 
 [de.title-page]
 first-reviewer = "Erstgutachter"

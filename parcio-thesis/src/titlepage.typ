@@ -10,13 +10,17 @@
   date,
 ) = {
   set align(center)
+
   let (first-reviewer, second-reviewer, supervisor) = translations.title-page
+  let (value, compound) = translations.thesis
+  let thesis-suffix = if compound { lower(value) } else { " " + value }
+  let thesis-type = thesis-type + thesis-suffix
 
   header-logo
 
   v(4.75em)
 
-  text(Large, font: "Libertinus Serif")[*#thesis-type #translations.thesis*]
+  text(Large, font: "Libertinus Serif")[*#thesis-type*]
   v(2.5em)
   text(huge, font: "Libertinus Sans")[
     #set par(justify: false)
