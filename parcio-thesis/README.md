@@ -4,8 +4,9 @@
     <img src="thumbnails/1.png" width=32%>&nbsp;
     <img src="thumbnails/2.png" width=32%>&nbsp;
     <img src="thumbnails/3.png" width=32%>
-A simple thesis template based on the ParCIO working group at Otto-von-Guericke University Magdeburg.
 </p>
+
+<p align="center">A simple thesis template based on the ParCIO working group at Otto-von-Guericke University Magdeburg.</p>
 
 ## Getting Started
 
@@ -29,9 +30,9 @@ To use this template, simply import it as shown below (more options under `Usage
 Following these steps will make the template available locally under the `@local` namespace. Requires ["Just - A Command Runner"](https://github.com/casey/just).
 
 ```sh
-$ git clone git@github.com:xkevio/parcio-typst.git 
-$ cd parcio-typst/parcio-thesis/
-$ just install
+git clone git@github.com:xkevio/parcio-typst.git 
+cd parcio-typst/parcio-thesis/
+just install
 ```
 
 ## Usage
@@ -73,6 +74,9 @@ These could be useful while writing your thesis!
 
 // Subfigures (see chapters/introduction).
 #let subfigure(..)
+
+// A ParCIO-like table with a design taken from the LaTeX template.
+#let parcio-table(max-rows, ..args)
 ```
 
 ### Translations
@@ -115,4 +119,4 @@ This template requires these three fonts to be installed on your system[^1]:
 
 We bundle the default "Faculty of Computer Science" head banner and use it as the `header-logo`. You can find yours at: https://www.cd.ovgu.de/Fakult%C3%A4ten.html.
 
-[^1]: Typst should already provide the Libertinus font family by default as it is the standard font.
+[^1]: Typst should already provide the Libertinus font family by default as it is their standard font.
