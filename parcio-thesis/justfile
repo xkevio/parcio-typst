@@ -1,37 +1,42 @@
-# source this script to prepare some common environment variables
+root := justfile_directory()
 
-# adapted from https://github.com/johannes-wolf/cetz/blob/35c0868378cea5ad323cc0d9c2f76de8ed9ba5bd/scripts/package
-# licensed under Apache License 2.0
+export TYPST_ROOT := root
 
-# Local package directories per platform
-if [[ "$OSTYPE" == "linux"* ]]; then
-  DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  DATA_DIR="$HOME/Library/Application Support"
-else
-  DATA_DIR="${APPDATA}"
-fi
+[private]
+default:
+	@just --list --unsorted
 
-function read-toml() {
-  local file="$1"
-  local key="$2"
-  # Read a key value pair in the format: <key> = "<value>"
-  # stripping surrounding quotes.
-  perl -lne "print \"\$1\" if /^${key}\\s*=\\s*\"(.*)\"/" < "$file"
-}
+# generate manual
+doc:
+	typst compile docs/manual.typ docs/manual.pdf
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd -P)/.." # macOS has no realpath
-PKG_PREFIX="$(read-toml "$ROOT/typst.toml" "name")"
-VERSION="$(read-toml "$ROOT/typst.toml" "version")"
+# run test suite
+test *args:
+	typst-test run {{ args }}
 
-function resolve-target() {
-  local target="$1"
+# update test cases
+update *args:
+	typst-test update {{ args }}
 
-	if [[ "$target" == "@local" ]]; then
-		echo "${DATA_DIR}/typst/packages/local"
-	elif [[ "$target" == "@preview" ]]; then
-		echo "${DATA_DIR}/typst/packages/preview"
-	else
-		echo "$target"
-	fi
-}
+# package the library into the specified destination folder
+package target:
+  ./scripts/package "{{target}}"
+
+# install the library with the "@local" prefix
+install: (package "@local")
+
+# install the library with the "@preview" prefix (for pre-release testing)
+install-preview: (package "@preview")
+
+[private]
+remove target:
+  ./scripts/uninstall "{{target}}"
+
+# uninstalls the library from the "@local" prefix
+uninstall: (remove "@local")
+
+# uninstalls the library from the "@preview" prefix (for pre-release testing)
+uninstall-preview: (remove "@preview")
+
+# run ci suite
+ci: test doc

@@ -12,10 +12,10 @@ _In this chapter, #lorem(50)_
   columns: 2, 
   label: <fig:main>,
   figure(caption: "Left")[
-    #image(alt: "Blue OVGU logo", width: 75%, "../../images/ovgu.jpg")  
+    #image(width: 75%, "../../images/ovgu-fin.svg")  
   ], <fig:main-a>,
   figure(caption: "Right")[
-    #image(alt: "Blue OVGU logo", width: 75%, "../../images/ovgu.jpg")  
+    #image(width: 75%, "../../images/ovgu-fin.svg")  
   ], <fig:main-b>
 )
 

@@ -15,6 +15,7 @@
 
 /* ---- Convencience functions ---- */
 
+#let if-none(x, other) = if other == none { x } else { other }
 #let roman-numbering(doc, reset: true) = {
   if reset { counter(page).update(1) }
   set page(footer: auto, numbering: "i")

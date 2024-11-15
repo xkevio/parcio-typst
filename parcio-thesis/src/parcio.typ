@@ -2,14 +2,15 @@
 #import "util.typ": *
 
 #let parcio(
-  title, 
-  author, 
-  abstract, 
+  title: [Title], 
+  author: (name: "Author", mail: "author@ovgu.de"), 
+  abstract: [], 
   thesis-type: "Bachelor/Master", 
   reviewers: (), 
   date: datetime.today(),
   lang: "en",
   header-logo: none,
+  translations: none,
   body
 ) = {
   /* Basic document rules. */
@@ -21,7 +22,7 @@
   set math.equation(numbering: "(1)")
 
   /* Handle translations in separate toml file for basic terms. */
-  let _translation-file = toml("../template/translations.toml")
+  let _translation-file = toml(if-none("translations.toml", translations))
   let translations = _translation-file.at(
     lang, 
     default: _translation-file.at(_translation-file.default-lang)

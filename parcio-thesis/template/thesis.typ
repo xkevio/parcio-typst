@@ -1,24 +1,27 @@
 #import "/parcio-thesis/src/parcio.typ": *
 
 /* 
-  Your ParCIO thesis template requires the following setup (3 required, 4 optional):
+  Your ParCIO thesis template has these possible options (you may not need all of them):
   
-  required: title, author, abstract (specify in order!)
-  optional: thesis-type to specify "Bachelor", "Master", "PhD", etc.,
-  optional: reviewers to specify "first-reviewer", "second-reviewer" and (if needed) "supervisor".
-  optional: date to specify your deadline (default: datetime.today())
-  optional: lang to specify the text language for smartquotes & hyphenation (specify as ISO 639-1/2/3 code, default: "en")
+  title: your thesis title.
+  author: your full name and e-mail address as (name: "", mail: "").
+  abstract: your thesis abstract.
+  thesis-type: your thesis type, such as "Bachelor", "Master" or "PhD".
+  reviewers: your thesis reviewers, specify in order "first-reviewer", "second-reviewer" and (if needed) "supervisor".
+  date: your thesis deadline (default: datetime.today()).
+  lang: the text language for smartquotes & hyphenation (specify as ISO 639-1/2/3 code, default: "en").
+  header-logo: your faculty and/or organization banner (default: none).
+  translations: a file path to a possible translation scheme.
 */
 #show: parcio.with(
-  "Title", 
-  (
+  title: "Title", 
+  author: (
     name: "Author",
     mail: "author@ovgu.de"
   ),
-  include "chapters/abstract.typ",
-  thesis-type: "Bachelor/Master",
+  abstract: include "chapters/abstract.typ",
   reviewers: ("Prof. Dr. Musterfrau", "Prof. Dr. Mustermann", "Dr. Evil"),
-  header-logo: image("images/ovgu.svg", width: 66%)
+  header-logo: image("images/ovgu-fin.svg", width: 66%)
 )
 
 #show: roman-numbering.with(reset: false)
