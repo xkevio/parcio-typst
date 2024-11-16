@@ -1,4 +1,4 @@
-#import "../../template/template.typ": subfigure, section
+#import "@local/parcio-thesis:0.1.0": subfigure, section
 
 = Introduction<intro>
 
@@ -12,10 +12,10 @@ _In this chapter, #lorem(50)_
   columns: 2, 
   label: <fig:main>,
   figure(caption: "Left")[
-    #image(alt: "Blue OVGU logo", width: 75%, "../../template/ovgu.jpg")  
+    #image(width: 75%, "../../images/ovgu-fin.svg")  
   ], <fig:main-a>,
   figure(caption: "Right")[
-    #image(alt: "Blue OVGU logo", width: 75%, "../../template/ovgu.jpg")  
+    #image(width: 75%, "../../images/ovgu-fin.svg")  
   ], <fig:main-b>
 )
 
