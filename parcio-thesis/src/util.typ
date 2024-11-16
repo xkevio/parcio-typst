@@ -39,6 +39,11 @@
   doc
 }
 
+#let appendix(reset: false, label: none, body) = {
+  if reset { counter(heading).update(0) }
+  [#heading(numbering: "A.", supplement: "Appendix", body)#label]
+}
+
 /* ------------------------------- */
 
 // TODO box (default: no inline).
