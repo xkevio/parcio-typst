@@ -15,7 +15,7 @@
 ) = {
   /* Basic document rules. */
   set document(title: title, author: author.name)
-  set page("a4", margin: 2.5cm, number-align: right, numbering: "i", footer: none)
+  set page("a4", margin: 2.5cm, number-align: right, numbering: "i")
   set text(font: "Libertinus Serif", 12pt, lang: lang)
   set heading(numbering: "1.1.")
   set par(justify: true)
@@ -180,30 +180,35 @@
 
   /* --- Title Page --- */
 
-  title-page(
-    title,
-    author,
-    thesis-type,
-    header-logo,
-    reviewers,
-    translations,
-    date
+  page(
+    footer: none,
+    title-page(
+      title,
+      author,
+      thesis-type,
+      header-logo,
+      reviewers,
+      translations,
+      date
+    )
   )
   
   show raw: set text(12pt * 0.95)
-  pagebreak(to: "odd")
-  set-page-properties()
+  empty-page
 
   /* --- Abstract --- */
 
-  v(-8.5em)
-  align(center + horizon)[
-    #text(font: "Libertinus Sans", [*Abstract*])\ \
-    #align(left, abstract)
+  page(footer: none)[
+    #set-page-properties()
+    #v(-8.5em)
+    #align(center + horizon)[
+      #text(font: "Libertinus Sans", [*Abstract*])\ \
+      #align(left, abstract)
+    ]
   ]
   
   /* --- Document Body --- */
 
-  pagebreak(to: "odd")
+  empty-page
   body
 }

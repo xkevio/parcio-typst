@@ -24,14 +24,12 @@
   header-logo: image("images/ovgu-fin.svg", width: 66%),
 )
 
-#show: roman-numbering.with(reset: false)
 #outline(depth: 3)
+#empty-page
 
 /* ---- Main matter of your thesis ---- */
 
-#empty-page
-
-// Set arabic numbering and alternate page number position.
+// Reset page counter to 1, arabic numbering and alternate page number position.
 #show: arabic-numbering
 
 #include "chapters/introduction/intro.typ"
