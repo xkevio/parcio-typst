@@ -13,15 +13,22 @@
   translations: none,
   body
 ) = {
-  /* Basic document rules. */
+  // Basic document rules.
   set document(title: title, author: author.name)
-  set page("a4", margin: 2.5cm, number-align: right, numbering: "i", footer: none)
+  set page(
+    "a4", 
+    margin: (left: 2.5cm, right: 2.5cm), 
+    number-align: right, 
+    numbering: "i", 
+    footer: none
+  )
+
   set text(font: "Libertinus Serif", 12pt, lang: lang)
   set heading(numbering: "1.1.")
   set par(justify: true)
   set math.equation(numbering: "(1)")
 
-  /* Handle translations in separate toml file for basic terms. */
+  // Handle translations in separate toml file for basic terms.
   let _translation-file = toml(if-none("translations.toml", translations))
   let translations = _translation-file.at(
     lang, 
@@ -48,7 +55,10 @@
   show figure.caption: c => {
     grid(
       columns: 2,
-      align(top)[#c.supplement #context c.counter.display(c.numbering).#c.separator],
+      column-gutter: 0pt,
+      align(top)[
+        #c.supplement #context c.counter.display(c.numbering).#c.separator
+      ],
       align(left, c.body),
     )
   }
@@ -82,15 +92,16 @@
     }
   }
 
-  show heading.where(level: 2): h => block({
-    if h.numbering != none {
-      [#counter(heading).display()~~#h.body]
-    } else {
-      h
+  // Add some additonal spacing between numbering and level 2 heading.
+  show heading.where(level: 2): it => block({
+    if it.numbering != none {
+      counter(heading).display()
+      h(0.5em)
     }
+    it.body
   })
 
-  /* Adjust refs: "Chapter XYZ" instead of "Section XYZ". */
+  // Adjust refs: "Chapter XYZ" instead of "Section XYZ".
   set ref(supplement: it => {
     if it.func() == heading and it.supplement == auto {
       if it.level > 1 {
@@ -105,48 +116,35 @@
 
   /* ---- Customization of ToC ---- */
 
-  set outline(fill: repeat(justify: true, gap: 0.5em)[.], title: translations.contents)
-  show outline: o => {
-    show heading: pad.with(bottom: 1.25em)
-    o
-  }
+  set outline(title: translations.contents)
+  show outline: it => { show heading: pad.with(bottom: 1.25em); it }
 
-  // Level 1 chapters get bold and no dots.
+  // Level 1 outline entries are bold and there is no fill.
+  show outline.entry.where(level: 1): set outline.entry(fill: none)
+  show outline.entry.where(level: 1): set block(above: 1.4em)
   show outline.entry.where(level: 1): it => {
     set text(font: "Libertinus Sans", weight: "bold")
-    let cc = if it.element.numbering != none {
-      numbering(
-        it.element.numbering, 
-        ..counter(heading).at(it.element.location())
-      )
-    } else {
-      h(-0.5em)
-    }
-    
-    v(0.1em)
-    box(grid(
-      columns: (auto, 1fr, auto),
-      link(it.element.location())[#cc #h(0.5em) #it.element.body],
-      h(1fr),
-      it.page,
-    ))
-  }
-
-  // Level 2 and deeper.
-  show outline.entry.where(level: 2)
-    .or(outline.entry.where(level: 3)): it => {
-    let cc = numbering("1.1.", ..counter(heading).at(it.element.location()))
-    let indent = h(1.5em + ((it.level - 2) * 2.5em))
-    
-    box(
-      grid(
-        columns: (auto, 1fr, auto),
-        indent + link(it.element.location())[#cc#h(1em)#it.element.body#h(5pt)],
-        it.fill,
-        box(width: 1.5em, align(right, it.page)),
-      ),
+    link(
+      it.element.location(), 
+      it.indented(it.prefix(), it.inner())
     )
   }
+
+  // Level 2 and 3 outline entries have a bigger gap and a dot fill.
+  show outline.entry.where(level: 2)
+    .or(outline.entry.where(level: 3)): set outline.entry(fill: repeat(justify: true, gap: 0.5em)[.])
+
+  show outline.entry.where(level: 2)
+    .or(outline.entry.where(level: 3)): it => {
+      link(
+        it.element.location(),
+        it.indented(
+          it.prefix(), 
+          it.body() + h(5pt) + box(width: 1fr, it.fill) + box(width: 1.5em, align(right, it.page())), 
+          gap: 1em
+        )
+      )
+    }
 
   /* ----------------------------- */
 
@@ -192,7 +190,7 @@
   
   show raw: set text(12pt * 0.95)
   pagebreak(to: "odd")
-  set-page-properties()
+  set-page-properties(margin-left: 2.5cm, margin-right: 2.5cm)
 
   /* --- Abstract --- */
 

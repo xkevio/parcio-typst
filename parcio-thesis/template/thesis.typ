@@ -1,4 +1,4 @@
-#import "@local/parcio-thesis:0.1.0": *
+#import "@local/parcio-thesis:0.2.0": *
 
 /* 
   Your ParCIO thesis template has these possible options (you may not need all of them):
@@ -41,6 +41,16 @@
 #include "chapters/eval/eval.typ"
 
 #include "chapters/conclusion/conc.typ"
+
+= thesis-type
+= x
+= x 
+= x 
+= x 
+== y 
+#pagebreak()
+== z
+=== s
 
 /* ---- Back matter of your thesis ---- */
 
