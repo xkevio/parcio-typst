@@ -121,30 +121,21 @@
 
   // Level 1 outline entries are bold and there is no fill.
   show outline.entry.where(level: 1): set outline.entry(fill: none)
-  show outline.entry.where(level: 1): set block(above: 1.4em)
-  show outline.entry.where(level: 1): it => {
-    set text(font: "Libertinus Sans", weight: "bold")
-    link(
-      it.element.location(), 
-      it.indented(it.prefix(), it.inner())
-    )
-  }
+  show outline.entry.where(level: 1): set block(above: 1.35em)
+  show outline.entry.where(level: 1): set text(font: "Libertinus Sans", weight: "bold")
 
   // Level 2 and 3 outline entries have a bigger gap and a dot fill.
   show outline.entry.where(level: 2)
     .or(outline.entry.where(level: 3)): set outline.entry(fill: repeat(justify: true, gap: 0.5em)[.])
 
-  show outline.entry.where(level: 2)
-    .or(outline.entry.where(level: 3)): it => {
-      link(
-        it.element.location(),
-        it.indented(
-          it.prefix(), 
-          it.body() + h(5pt) + box(width: 1fr, it.fill) + box(width: 1.5em, align(right, it.page())), 
-          gap: 1em
-        )
-      )
-    }
+  show outline.entry.where(level: 2).or(outline.entry.where(level: 3)): it => link(
+    it.element.location(),
+    it.indented(gap: 1em, it.prefix(),
+      it.body()
+        + box(width: 1fr, inset: (left: 5pt), it.fill)
+        + box(width: 1.5em, align(right, it.page())),
+    )
+  )
 
   /* ----------------------------- */
 
