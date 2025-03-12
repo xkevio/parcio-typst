@@ -1,5 +1,5 @@
-#import "@preview/drafting:0.2.0": margin-note, set-page-properties
-#import "@preview/subpar:0.1.1"
+#import "@preview/drafting:0.2.2": margin-note, set-page-properties
+#import "@preview/subpar:0.2.1"
 
 #let ovgu-blue = rgb("#0068B4")
 #let ovgu-darkgray = rgb("#606060")
@@ -16,6 +16,8 @@
 /* ---- Convencience functions ---- */
 
 #let if-none(x, other) = if other == none { x } else { other }
+#let mono-args = arguments(font: "Inconsolata", size: 12pt * 0.95)
+
 #let roman-numbering(doc, reset: true) = {
   if reset { counter(page).update(1) }
   set page(footer: auto, numbering: "i")
@@ -66,6 +68,7 @@
 
 // Subfigures.
 #let subfigure = subpar.grid.with(
+  grid-styles: body => { set grid(gutter: 0em); body },
   numbering: (num) => {
     numbering("1.1", counter(heading).get().first(), num)
   },
