@@ -38,10 +38,7 @@
   /* ---- General design choices. --- */
 
   // Make URLs use monospaced font.
-  show link: it => {
-    set text(font: "Inconsolata", 12pt * 0.95) if type(it.dest) == str
-    it
-  }
+  show link: it => { set text(..mono-args) if type(it.dest) == str; it }
 
   // Enable heading specific figure numbering and increase spacing.
   show figure: set block(spacing: 1.5em)
@@ -52,7 +49,6 @@
   show figure.caption: c => {
     grid(
       columns: 2,
-      column-gutter: 0pt,
       align: top + left,
       [#c.supplement #context c.counter.display(c.numbering).#c.separator],
       c.body,
@@ -135,7 +131,7 @@
 
   /* ----------------------------- */
 
-  show raw: set text(font: "Inconsolata", 12pt * 0.95)
+  show raw: set text(..mono-args)
   show raw.where(block: true): r => {
     set par(justify: false)
     show raw.line: l => {
