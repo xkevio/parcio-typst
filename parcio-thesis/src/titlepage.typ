@@ -28,12 +28,13 @@
   ]
   v(1.25em)
 
+  /* ----- */
+
   set text(_Large)
-  show raw: set text(_large * 0.95)
   
   author.name
   v(0.75em, weak: true)
-  link("mailto:" + author.mail)[#raw(author.mail)]
+  link("mailto:" + author.mail, text(_large * 0.95, author.mail))
 
   v(0.5em)
   [
@@ -42,7 +43,7 @@
   ]
   v(5.35em)
 
-  /* First and second reviewer are required, supervisor is optional. */
+  // First and second reviewer are required, supervisor is optional.
   if reviewers.len() >= 2 {
     let first-reviewer-name = reviewers.first()
     let second-reviewer-name = reviewers.at(1)

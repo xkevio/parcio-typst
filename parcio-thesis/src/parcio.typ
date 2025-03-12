@@ -45,10 +45,7 @@
 
   // Enable heading specific figure numbering and increase spacing.
   show figure: set block(spacing: 1.5em)
-  set figure(
-    numbering: n => numbering("1.1", counter(heading).get().first(), n), 
-    gap: 1em
-  )
+  set figure(numbering: n => numbering("1.1", counter(heading).get().first(), n), gap: 1em)
 
   // Add final period after fig-numbering (1.1 -> 1.1.).
   // Additionally, left align caption if it spans multiple lines.
@@ -56,10 +53,9 @@
     grid(
       columns: 2,
       column-gutter: 0pt,
-      align(top)[
-        #c.supplement #context c.counter.display(c.numbering).#c.separator
-      ],
-      align(left, c.body),
+      align: top + left,
+      [#c.supplement #context c.counter.display(c.numbering).#c.separator],
+      c.body,
     )
   }
 
@@ -139,7 +135,7 @@
 
   /* ----------------------------- */
 
-  show raw: set text(font: "Inconsolata")
+  show raw: set text(font: "Inconsolata", 12pt * 0.95)
   show raw.where(block: true): r => {
     set par(justify: false)
     show raw.line: l => {
@@ -179,7 +175,6 @@
     date
   )
   
-  show raw: set text(12pt * 0.95)
   pagebreak(to: "odd")
   set-page-properties(margin-left: 2.5cm, margin-right: 2.5cm)
 

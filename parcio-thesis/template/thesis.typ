@@ -3,15 +3,15 @@
 /* 
   Your ParCIO thesis template has these possible options (you may not need all of them):
   
-  title: your thesis title.
-  author: your full name and e-mail address as (name: "", mail: "").
-  abstract: your thesis abstract.
-  thesis-type: your thesis type, such as "Bachelor", "Master" or "PhD".
-  reviewers: your thesis reviewers, specify in order "first-reviewer", "second-reviewer" and (if needed) "supervisor".
-  date: your thesis deadline (default: datetime.today()).
-  lang: the text language for smartquotes & hyphenation (specify as ISO 639-1/2/3 code, default: "en").
-  header-logo: your faculty and/or organization banner (default: none).
-  translations: a file path to a possible translation scheme.
+  - title: your thesis title.
+  - author: your full name and e-mail address as (name: "", mail: "").
+  - abstract: your thesis abstract.
+  - thesis-type: your thesis type, such as "Bachelor", "Master" or "PhD".
+  - reviewers: your thesis reviewers, specify in order "first-reviewer", "second-reviewer" and (if needed) "supervisor".
+  - date: your thesis deadline (default: datetime.today()).
+  - lang: the text language for smartquotes & hyphenation (specify as ISO 639-1/2/3 code, default: "en").
+  - header-logo: your faculty and/or organization banner (default: none).
+  - translations: a file path to a possible translation scheme.
 */
 #show: parcio.with(
   title: "Title", 
@@ -41,16 +41,6 @@
 #include "chapters/eval/eval.typ"
 
 #include "chapters/conclusion/conc.typ"
-
-= thesis-type
-= x
-= x 
-= x 
-= x 
-== y 
-#pagebreak()
-== z
-=== s
 
 /* ---- Back matter of your thesis ---- */
 
