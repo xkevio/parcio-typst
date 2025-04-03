@@ -19,14 +19,12 @@
 #let mono-args = arguments(font: "Inconsolata", size: 12pt * 0.95)
 
 #let roman-numbering(doc, reset: true) = {
-  if reset { counter(page).update(1) }
   set page(footer: auto, numbering: "i")
+  if reset { counter(page).update(1) }
   doc
 }
 
 #let arabic-numbering(doc, alternate: true, reset: true) = {
-  if reset { counter(page).update(1) }
-
   let footer = if alternate {
     context {
       let page-count = counter(page).get().first()
@@ -38,6 +36,8 @@
   }
 
   set page(footer: footer, numbering: "1")
+  if reset { counter(page).update(1) }
+
   doc
 }
 
