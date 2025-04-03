@@ -18,28 +18,25 @@
 #let if-none(x, other) = if other == none { x } else { other }
 #let mono-args = arguments(font: "Inconsolata", size: 12pt * 0.95)
 
-#let roman-numbering(doc, reset: true) = {
-  set page(footer: auto, numbering: "i")
-  if reset { counter(page).update(1) }
-  doc
-}
-
-#let arabic-numbering(doc, alternate: true, reset: true) = {
+#let setup-numbering(doc, num: "1", reset: true, alternate: true) = {
   let footer = if alternate {
     context {
       let page-count = counter(page).get().first()
       let page-align = if calc.odd(page-count) { right } else { left } 
-      align(page-align, counter(page).display("1"))
+      align(page-align, counter(page).display(num))
     }
   } else {
     auto
   }
 
-  set page(footer: footer, numbering: "1")
+  set page(footer: footer, numbering: num)
   if reset { counter(page).update(1) }
 
   doc
 }
+
+#let roman-numbering(doc, reset: true, alternate: true) = setup-numbering(doc, num: "i", reset: reset, alternate: alternate)
+#let arabic-numbering(doc, reset: true, alternate: true) = setup-numbering(doc, reset: reset, alternate: alternate)
 
 /* ------------------------------- */
 
