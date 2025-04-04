@@ -13,7 +13,7 @@
 To use this template, simply import it as shown below (more options under `Usage`):
 
 ```typ
-#import "@preview/parcio-thesis:0.2.0": *
+#import "@preview/parcio-thesis:0.2.1": *
 
 #show: parcio.with(
   title: "My great thesis",
@@ -40,7 +40,7 @@ just install
 See here for **all** possible arguments (and their default values) and utility functions:
 
 ```typ
-#import "@preview/parcio-thesis:0.2.0": *
+#import "@preview/parcio-thesis:0.2.1": *
 
 #show: parcio.with(
   title: "Title",
