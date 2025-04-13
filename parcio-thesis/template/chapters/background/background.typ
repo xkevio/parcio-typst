@@ -1,4 +1,4 @@
-#import "@local/parcio-thesis:0.2.1": parcio-table, section
+#import "@local/parcio-thesis:0.2.2": parcio-table, section
 
 = Background<bg>
 

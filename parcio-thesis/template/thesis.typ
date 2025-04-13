@@ -1,4 +1,4 @@
-#import "@local/parcio-thesis:0.2.1": *
+#import "@local/parcio-thesis:0.2.2": *
 
 /* 
   Your ParCIO thesis template has these possible options (you may not need all of them):
