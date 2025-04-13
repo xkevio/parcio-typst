@@ -147,7 +147,7 @@
     }
     
     set align(left)
-    rect(width: 100%, stroke: gray + 0.5pt, inset: 0.75em, r)
+    block(width: 100%, stroke: gray + 0.5pt, inset: 0.75em, r)
   }
 
   /* ----------------------------- */
