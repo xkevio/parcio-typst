@@ -46,26 +46,10 @@ Creating slides is done via the `#slide()`-function with the following default a
 ```
 
 Most often, you will use `#slide` like this: `#slide(title: "Introduction")[...]`—setting a title is important for the header bar to properly work!
-### Slides
 
-Creating slides is done via the `#slide()`-function with the following default arguments:
+### Local Installation
 
-```typ
-#slide(
-  title: none,
-  new-secction: none,
-  show-current-section: true,
-  show-footer: true,
-  skip: false,
-  body,
-)
-```
-
-Most often, you will use `#slide` like this: `#slide(title: "Introducti // title of your current slideon")[...]`setting a title is important for the header bar to prperly work!
- // marks a new topic, add it to the outline and is displayed in the top-right 
-### Local Installation // whether to display the current section in the top-right
- // whether to display the footer (disabled for `bib-slide` and `outline-slide`)
-Following these steps will make the template available locally under the `@loc // whether to skip the page counter for this slideal` namespace. Requires ["Just - A Command Runner"](https://github.com/casey/just).
+Following these steps will make the template available locally under the `@local` namespace. Requires ["Just - A Command Runner"](https://github.com/casey/just).
 
 ```sh
 git clone git@github.com:xkevio/parcio-typst.git 
