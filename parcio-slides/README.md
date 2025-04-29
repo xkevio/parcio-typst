@@ -30,10 +30,42 @@ on your title slide.
 The `short-title` is useful for specifying a shorter title which is displayed in the footer of each slide.
 Additionally, `extra` can be used for specifying your lecture, institute or faculty. See `template/main.typ` for a full example!
 
+### Slides
 
-### Local Installation
+Creating slides is done via the `#slide()`-function with the following default arguments:
 
-Following these steps will make the template available locally under the `@local` namespace. Requires ["Just - A Command Runner"](https://github.com/casey/just).
+```typ
+#slide(
+  title: none, // title of your current slide
+  new-section: none, // marks a new topic, add it to the outline and is displayed in the top-right 
+  show-current-section: true, // whether to display the current section in the top-right
+  show-footer: true, // whether to display the footer (disabled for `bib-slide` and `outline-slide`)
+  skip: false, // whether to skip the page counter for this slide
+  body,
+)
+```
+
+Most often, you will use `#slide` like this: `#slide(title: "Introduction")[...]`—setting a title is important for the header bar to properly work!
+### Slides
+
+Creating slides is done via the `#slide()`-function with the following default arguments:
+
+```typ
+#slide(
+  title: none,
+  new-secction: none,
+  show-current-section: true,
+  show-footer: true,
+  skip: false,
+  body,
+)
+```
+
+Most often, you will use `#slide` like this: `#slide(title: "Introducti // title of your current slideon")[...]`setting a title is important for the header bar to prperly work!
+ // marks a new topic, add it to the outline and is displayed in the top-right 
+### Local Installation // whether to display the current section in the top-right
+ // whether to display the footer (disabled for `bib-slide` and `outline-slide`)
+Following these steps will make the template available locally under the `@loc // whether to skip the page counter for this slideal` namespace. Requires ["Just - A Command Runner"](https://github.com/casey/just).
 
 ```sh
 git clone git@github.com:xkevio/parcio-typst.git 
