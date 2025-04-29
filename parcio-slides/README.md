@@ -1,5 +1,11 @@
 # The `parcio-slides` Polylux Template
 
+<p align="center">
+    <img src="thumbnails/cover.png">
+</p>
+
+<p align="center">A simple [polylux](https://typst.app/universe/package/polylux/) slides template based on the ParCIO working group at Otto-von-Guericke University Magdeburg.</p>
+
 ## Getting Started
 
 To use this template, simply import it as shown below and define a `title-slide` with the following possible options:
