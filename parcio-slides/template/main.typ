@@ -1,14 +1,10 @@
-#import "template/parcio.typ": *
-
-// See template file > Helper Functions for extra stuff!
-#show: parcio-theme.with()
-#set text(size: 20pt)
+#import "@local/parcio-slides:0.1.0": *
+#show: parcio-theme
 
 #title-slide(
   title: "Title",
   subtitle: "Subtitle",
-  author: (name: "Author", mail: "author@ovgu.de"),
-  date: datetime.today().display("[month repr:long] [day], [year]"),
+  logo: image("ovgu.svg", width: 9.8cm),
   extra: [
     #set text(0.825em)
     Faculty of Computer Science\
@@ -18,6 +14,8 @@
 
 #outline-slide()
 
+/* ---------- */
+
 #slide(title: "Template", new-section: "Introduction")[
   - This presentation template is available at
     https://github.com/xkevio/parcio-typst and consists of Sections 1 to 4.
@@ -26,15 +24,15 @@
 #slide(
   title: "Figures",
 )[
-  #subfigure(
+  #subpar.grid(
     caption: "Test", 
     columns: 2,
     label: <fig1>,
     figure(caption: "Left")[
-      #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
+      #image(alt: "Blue OVGU logo", width: 75%, "ovgu.svg")
     ],<fig1a>,
     figure(caption: "Right")[
-      #image(alt: "Blue OVGU logo", width: 75%, "template/ovgu.svg")
+      #image(alt: "Blue OVGU logo", width: 75%, "ovgu.svg")
     ],<fig1b>
   )
   \
@@ -77,7 +75,7 @@
   ]
 ]
 
-#s(t: "Listings", ns: "Evaluation")[
+#slide(title: "Listings", new-section: "Evaluation")[
   #figure(caption: "Caption")[
     ```c
     printf("Hello World\n");
@@ -94,7 +92,7 @@
   - You can also refer to listings (@lst)
 ]
 
-#s(t: "Columns")[
+#slide(title: "Columns")[
   #grid(columns: (1fr, 1fr), column-gutter: 1em)[
     - Slides can be split into columns
   ][
@@ -116,4 +114,8 @@
   #lorem(125)
 ]
 
-#bib-slide("../bibliography/report.bib")
+#bib-slide(bibliography(
+  "/bibliography/report.bib",
+   title: none,
+   style: "/bibliography/apalike.csl"
+))
