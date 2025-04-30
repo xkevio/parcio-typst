@@ -1,10 +1,15 @@
 # The `parcio-slides` Polylux Template
 
 <p align="center">
-    <img src="thumbnails/cover.png" width=75%>
+    <img src="thumbnails/cover.png" width=40%>
+    <img src="thumbnails/main-02.png" width=40%><br/>
+    <img src="thumbnails/main-03.png" width=40%>
+    <img src="thumbnails/main-04.png" width=40%>
 </p>
 
-A simple [polylux](https://typst.app/universe/package/polylux/) slides template based on the ParCIO working group at Otto-von-Guericke University Magdeburg.
+<p align="center">
+A simple <a href="https://typst.app/universe/package/polylux/">polylux</a> slides template based on the ParCIO working group at Otto-von-Guericke University Magdeburg.
+</p>
 
 ## Getting Started
 
@@ -29,7 +34,7 @@ To use this template, simply import it as shown below and define a `title-slide`
 )
 ```
 
-These are the default options. We recommend leaving the show-rule as-is, such that you can just do `#show parcio-theme` and
+These are the default options. We recommend leaving the show-rule as-is, such that you can just do `#show parcio-theme`, and
 using the provided OvGU logo for your title slide (if you initialized with `typst init`) by specifying `logo: image("ovgu.svg", width: 9.8cm)`
 on your title slide.
 
