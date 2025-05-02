@@ -23,17 +23,17 @@
     footer: none
   )
 
-  set text(font: "Libertinus Serif", 12pt, lang: lang)
-  set heading(numbering: "1.1.")
-  set par(justify: true)
-  set math.equation(numbering: "(1)")
-
   // Handle translations in separate toml file for basic terms.
   let _translation-file = toml(if-none("translations.toml", translations))
   let translations = _translation-file.at(
     lang, 
     default: _translation-file.at(_translation-file.default-lang)
   )
+
+  set text(font: "Libertinus Serif", 12pt, lang: lang)
+  set heading(numbering: "1.1.", supplement: translations.section)
+  set par(justify: true)
+  set math.equation(numbering: "(1)")
 
   /* ---- General design choices. --- */
 
@@ -58,6 +58,7 @@
   /* ---- Stylization of headings / chapters. ---- */
 
   // Create "Chapter X." heading for every numbered level 1 heading.
+  show heading.where(level: 1): set heading(supplement: translations.chapter)
   show heading.where(level: 1): h => {
     set text(_huge, font: "Libertinus Sans")
 
@@ -91,19 +92,6 @@
       h(0.5em)
     }
     it.body
-  })
-
-  // Adjust refs: "Chapter XYZ" instead of "Section XYZ".
-  set ref(supplement: it => {
-    if it.func() == heading and it.supplement == auto {
-      if it.level > 1 {
-        translations.section
-      } else {
-        translations.chapter
-      }
-    } else {
-      it.supplement
-    }
   })
 
   /* ---- Customization of ToC ---- */

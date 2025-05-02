@@ -98,7 +98,7 @@ default-lang = "en"
 [de]
 contents = "Inhaltsverzeichnis"
 chapter = "Kapitel"
-section = "Sektion"
+section = "Abschnitt"
 thesis = { value = "Arbeit", compound = true }
 
 [de.title-page]
