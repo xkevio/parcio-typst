@@ -114,13 +114,27 @@
 
       // Bottom part: Author, date, institution, etc.
       set text(size: .9em)
-      stack(spacing: 1em, author.name + "\n" + link("mailto:" + author.mail), date, extra)
+      
+      let author-information = if type(author) == array {
+        let names = author.map(x => x.name)
+        let mails = author.map(x => x.mail)
+
+        let name-and-mail = names.zip(mails).map(
+          ((n, m)) => n + "\n" + link("mailto:" + m)
+        )
+
+        grid(columns: author.len(), column-gutter: 1em, ..name-and-mail)
+      } else {
+        author.name + "\n" + link("mailto:" + author.mail)
+      }
+
+      stack(spacing: 1em, author-information, date, extra)
     })
   }
 
   m-footer.update(
     grid(columns: 3 * (1fr,), align: (left, center, right), 
-      author.at("name", default: "Your Name"), 
+      [Your Name], 
       if short-title != none { short-title } else { title }, 
       context [#m-pages.get().first() / #m-pages.final().first()]
     ),
@@ -213,13 +227,11 @@
   show-current-section: false, 
   skip: true
 )[
-    #set grid(align: top)
-    #set par(justify: true)
-    #set text(0.9em)
-    
-    #bibliography
-  ]
-}
+  #set grid(align: top)
+  #set par(justify: true)
+  #set text(0.9em)
+  #bibliography
+]
 
 // Custom ParCIO table as illustrated in the template.
 #let parcio-table(max-rows, ..args) = table(

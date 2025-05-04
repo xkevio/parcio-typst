@@ -18,7 +18,7 @@ To use this template, simply import it as shown below and define a `title-slide`
 ```typ
 #import "@preview/parcio-slides:0.1.0": *
 
-#show parcio-theme.with(
+#show: parcio-theme.with(
   aspect-ratio: "16-9", // "16-9" and "4-3" are the only possible options.
   text-size: 20pt, // We recommend around this text size, as it fits nicely.
 )
@@ -37,6 +37,16 @@ To use this template, simply import it as shown below and define a `title-slide`
 These are the default options. We recommend leaving the show-rule as-is, such that you can just do `#show parcio-theme`, and
 using the provided OvGU logo for your title slide (if you initialized with `typst init`) by specifying `logo: image("ovgu.svg", width: 9.8cm)`
 on your title slide.
+
+Multiple authors can be provided by providing an array of dictionaries instead, like so: 
+```typ
+...
+author: (
+  (name: "Author One", mail: "author.one@ovgu.de"), 
+  (name: "Author Two", mail: "author.two@ovgu.de")
+),
+...
+```
 
 The `short-title` is useful for specifying a shorter title which is displayed in the footer of each slide.
 Additionally, `extra` can be used for specifying your lecture, institute or faculty. See `template/main.typ` for a full example!
