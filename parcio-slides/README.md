@@ -38,7 +38,7 @@ These are the default options. We recommend leaving the show-rule as-is, such th
 using the provided OvGU logo for your title slide (if you initialized with `typst init`) by specifying `logo: image("ovgu.svg", width: 9.8cm)`
 on your title slide.
 
-Multiple authors can be provided by providing an array of dictionaries instead, like so: 
+Multiple authors can be displayed by providing an array of dictionaries instead, like so: 
 ```typ
 ...
 author: (
@@ -74,7 +74,7 @@ Most often, you will use `#slide` like this: `#slide(title: "Introduction")[...]
 - You can use `#bib-slide(title: "References", bib)` to create a slide containing your bibliography. This slide will have slightly smaller text, justified paragraphs and expects
 the actual `bibliography(..)` function call as a second argument.
 
-#### Using `polylux` funtions
+#### Using `polylux` functions
 
 In order to use `polylux` functions for dynamic slide management, such as `show: later` or `uncover`, importing those functions separately is necessary.
 Additionally, this template uses a different page counter than that of `polylux`, so to achieve the correct dynamic slide numbering, manual fiddling is required
