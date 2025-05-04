@@ -37,6 +37,7 @@
 
   set text(font: "Libertinus Sans", fill: m-dark-teal, text-size)
   set list(indent: 1em)
+  set enum(indent: 1em)
   
   show raw: set text(font: "Inconsolata", 1.1em)
   show raw: set par(leading: 0.75em)
