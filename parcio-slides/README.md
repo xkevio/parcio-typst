@@ -64,6 +64,12 @@ Most often, you will use `#slide` like this: `#slide(title: "Introduction")[...]
 - You can use `#bib-slide(title: "References", bib)` to create a slide containing your bibliography. This slide will have slightly smaller text, justified paragraphs and expects
 the actual `bibliography(..)` function call as a second argument.
 
+#### Using `polylux` funtions
+
+In order to use `polylux` functions for dynamic slide management, such as `show: later` or `uncover`, importing those functions separately is necessary.
+Additionally, this template uses a different page counter than that of `polylux`, so to achieve the correct dynamic slide numbering, manual fiddling is required
+(the counter is accessible through `#counter("m-page")`).
+
 ### Local Installation
 
 Following these steps will make the template available locally under the `@local` namespace. Requires ["Just - A Command Runner"](https://github.com/casey/just).
