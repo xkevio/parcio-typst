@@ -18,7 +18,7 @@ To use this template, simply import it as shown below and define a `title-slide`
 ```typ
 #import "@preview/parcio-slides:0.1.0": *
 
-#show parcio-slides.with(
+#show parcio-theme.with(
   aspect-ratio: "16-9", // "16-9" and "4-3" are the only possible options.
   text-size: 20pt, // We recommend around this text size, as it fits nicely.
 )
@@ -57,6 +57,12 @@ Creating slides is done via the `#slide()`-function with the following default a
 ```
 
 Most often, you will use `#slide` like this: `#slide(title: "Introduction")[...]`—setting a title is important for the header bar to properly work!
+
+#### Outline and Bibliography Slides
+
+- You can use `#outline-slide(title: "Outline")` to create a slide which lists all of your sections you registered with `new-section`!
+- You can use `#bib-slide(title: "References", bib)` to create a slide containing your bibliography. This slide will have slightly smaller text, justified paragraphs and expects
+the actual `bibliography(..)` function call as a second argument.
 
 ### Local Installation
 
