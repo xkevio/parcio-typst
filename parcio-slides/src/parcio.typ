@@ -114,7 +114,7 @@
 
       // Bottom part: Author, date, institution, etc.
       set text(size: .9em)
-      
+
       let author-information = if type(author) == array {
         let names = author.map(x => x.name)
         let mails = author.map(x => x.mail)
@@ -134,7 +134,7 @@
 
   m-footer.update(
     grid(columns: 3 * (1fr,), align: (left, center, right), 
-      [Your Name], 
+      if type(author) == array { author.map(x => x.name).join(", ") } else { author.name }, 
       if short-title != none { short-title } else { title }, 
       context [#m-pages.get().first() / #m-pages.final().first()]
     ),
