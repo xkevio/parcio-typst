@@ -133,7 +133,7 @@
   }
 
   m-footer.update(
-    grid(columns: 3 * (1fr,), align: (left, center, right), 
+    grid(columns: (1fr, auto, 1fr), align: (left, center, right), 
       if type(author) == array { author.map(x => x.name).join(", ") } else { author.name }, 
       if short-title != none { short-title } else { title }, 
       context [#m-pages.get().first() / #m-pages.final().first()]
