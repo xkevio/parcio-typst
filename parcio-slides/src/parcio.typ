@@ -15,6 +15,7 @@
 
 #let m-pages = counter("m-page")
 #let m-footer = state("m-footer", [])
+#let m-metadata = state("m-metadata", (:))
 
 #let m-progress-bar = context {
   let ratio = m-pages.get().first() / m-pages.final().first()
@@ -94,6 +95,7 @@
   date: datetime.today().display(), 
   extra: none,
 ) = {
+  m-metadata.update(("title": title, "authors": author))
   let content = {
     set align(horizon)
 
@@ -213,11 +215,24 @@
 /* ----- Helper / Utility functions for tables, subfigures, shortcuts & todos. ----- */
 
 // Creates a clickable outline with a customizable title for each `new-section` entry.
-#let outline-slide(title: "Outline") = slide(
+// - `show-title`: Whether to show the presentation title as a heading (default: false)
+// - `new-section`: The next section to highlight in the outline-slide (default: none)
+#let outline-slide(title: "Outline", show-title: false, new-section: none) = slide(
   title: title, 
   show-footer: false, 
   skip: true,
-  toolbox.all-sections((s, c) => list(..s, marker: none, spacing: 3em))
+  [
+    #set list(marker: none, spacing: 2em)
+    #set text(gray) if new-section != none
+
+    #if show-title [
+      - #text(m-dark-teal, context m-metadata.get().title)
+    ]
+
+    - #toolbox.all-sections((s, c) => list(
+        ..s.map(x => if x.body.text == new-section { text(m-dark-teal, x) } else { x })
+      ))
+  ]
 )
 
 // Creates a list of all references using the given style.

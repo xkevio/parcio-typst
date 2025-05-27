@@ -1,4 +1,4 @@
-#import "@local/parcio-slides:0.1.1": *
+#import "@local/parcio-slides:0.1.2": *
 #show: parcio-theme
 
 #title-slide(
@@ -12,7 +12,8 @@
   ],
 )
 
-#outline-slide()
+// Show presentation title in outline and highlight upcoming section.
+#outline-slide(show-title: true, new-section: "Introduction")
 
 /* ---------- */
 
