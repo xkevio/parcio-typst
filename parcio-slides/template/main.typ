@@ -90,7 +90,7 @@
     ```
   ]<lst>
 
-  - You can also refer to listings (@lst)
+  - You can also refer to listings (@lst) and use `inline code`!
 ]
 
 #slide(title: "Columns")[

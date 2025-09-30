@@ -41,10 +41,10 @@
   set enum(indent: 1em)
   
   show raw: set text(font: "Inconsolata", 1.1em)
-  show raw: set par(leading: 0.75em)
 
   // Add line numbers to code block.
   show raw.where(block: true): r => {
+    show raw: set par(leading: 0.75em)
     show raw.line: l => {
       box(table(
         columns: (-1.25em, 100%),
