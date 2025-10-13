@@ -8,6 +8,7 @@
   thesis-type: "Bachelor/Master", 
   reviewers: (), 
   date: datetime.today(),
+  heading-numbering: "1.1.",
   lang: "en",
   header-logo: none,
   translations: none,
@@ -31,7 +32,7 @@
   )
 
   set text(font: "Libertinus Serif", 12pt, lang: lang)
-  set heading(numbering: "1.1.", supplement: translations.section)
+  set heading(numbering: heading-numbering, supplement: translations.section)
   set par(justify: true)
   set math.equation(numbering: "(1)")
 
@@ -78,7 +79,7 @@
           #translations.chapter #counter(heading).display()
         ]
 
-        #heading-prefix#v(0.25em)#h.body
+        #heading-prefix#v(0.2em)#h.body
       ]
     } else {
       v(2.3cm) + h
@@ -140,7 +141,7 @@
 
   /* ----------------------------- */
 
-  show heading: set block(spacing: 1.25em)
+  show heading: set block(spacing: 1.25 * _Large)
   show heading.where(level: 2): set text(font: "Libertinus Sans", _Large)
   show heading.where(level: 3): set text(font: "Libertinus Sans", _Large)
   

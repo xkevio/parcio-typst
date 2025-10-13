@@ -1,6 +1,6 @@
 [package]
 name = "parcio-thesis"
-version = "0.2.2"
+version = "0.2.3"
 entrypoint = "src/parcio.typ"
 authors = ["Kevin Kulot <@xkevio>"]
 license = "0BSD"

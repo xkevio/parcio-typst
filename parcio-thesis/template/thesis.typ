@@ -1,4 +1,4 @@
-#import "@local/parcio-thesis:0.2.2": *
+#import "@local/parcio-thesis:0.2.3": *
 
 /* 
   Your ParCIO thesis template has these possible options (you may not need all of them):
@@ -9,6 +9,7 @@
   - thesis-type: your thesis type, such as "Bachelor", "Master" or "PhD".
   - reviewers: your thesis reviewers, specify in order "first-reviewer", "second-reviewer" and (if needed) "supervisor".
   - date: your thesis deadline (default: datetime.today()).
+  - heading-numbering: how to number your headings (default: "1.1.")
   - lang: the text language for smartquotes & hyphenation (specify as ISO 639-1/2/3 code, default: "en").
   - header-logo: your faculty and/or organization banner (default: none).
   - translations: a file path to a possible translation scheme.

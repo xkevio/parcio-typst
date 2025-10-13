@@ -1,4 +1,4 @@
-#import "@local/parcio-thesis:0.2.2": subfigure, section
+#import "@local/parcio-thesis:0.2.3": subfigure, section
 
 = Introduction<intro>
 
