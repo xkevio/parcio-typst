@@ -1,0 +1,34 @@
+body {
+  background-color: white;
+  color: #23373b;
+  overflow: hidden;
+  height: 100dvh;
+  font-family: "Libertinus Sans";
+  font-size: 20pt;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 80rem;
+}
+
+div.header {
+  background-color: #c0c0c0;
+  height: 10%;
+}
+
+div.slide {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  position: relative;
+}
+
+div.slide-num {
+  position: absolute;
+  right: 0;
+  bottom: 4em;
+  text-align: right;
+  font-size: .5em;
+}
