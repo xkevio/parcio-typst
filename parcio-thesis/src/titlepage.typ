@@ -17,31 +17,34 @@
   let thesis-type = thesis-type + thesis-suffix
 
   header-logo
-
-  v(4.75em)
-
+  linebreak()
+  
+  v(2em)
   text(_Large, font: "Libertinus Serif")[*#thesis-type*]
-  v(2.5em)
+  v(1.5em)
+  
   text(_huge, font: "Libertinus Sans")[
     #set par(justify: false)
     *#title*
   ]
-  v(1.25em)
+  
+  v(1.5em)
 
   /* ----- */
 
   set text(_Large)
   
   author.name
-  v(0.75em, weak: true)
+  v(0.5em, weak: true)
   link("mailto:" + author.mail, text(_large * 0.95, author.mail))
 
-  v(0.5em)
+  v(12pt)
   [
     #show regex("[a-zA-Z]+"): r => translations.date.months.at(date.month() - 1)
     #date.display(translations.date.date-format)
   ]
-  v(5.35em)
+  
+  v(1fr)
 
   // First and second reviewer are required, supervisor is optional.
   if reviewers.len() >= 2 {
@@ -64,4 +67,6 @@
       ]
     ]
   }
+
+  v(1fr)
 }

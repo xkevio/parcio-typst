@@ -5,7 +5,7 @@
   title: [Title], 
   author: (name: "Author", mail: "author@ovgu.de"), 
   abstract: [], 
-  thesis-type: "Bachelor/Master", 
+  thesis-type: "Bachelor or Master", 
   reviewers: (), 
   date: datetime.today(),
   heading-numbering: "1.1.",
