@@ -64,6 +64,9 @@ See here for **all** possible arguments (and their default values) as well as ut
   /// The way your headings should be numbered.
   /// -> numbering | string
   heading-numbering: "1.1.",
+  /// Whether to start a new chapter at an even or odd page (can be `"even"`, `"odd"` or `none`).
+  /// -> str | none
+  chapter-start-at: none,
   /// The language of your thesis for automatic hyphenation and spellcheck.
   /// -> string
   lang: "en",

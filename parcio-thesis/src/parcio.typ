@@ -23,6 +23,9 @@
   /// The way your headings should be numbered.
   /// -> numbering | string
   heading-numbering: "1.1.",
+  /// Whether to start a new chapter at an even or odd page (can be `"even"`, `"odd"` or `none`).
+  /// -> str | none
+  chapter-start-at: none,
   /// The language of your thesis for automatic hyphenation and spellcheck.
   /// -> string
   lang: "en",
@@ -79,8 +82,19 @@
   show heading.where(level: 1): h => {
     set text(_huge, font: "Libertinus Sans")
 
+    // Non-numbered headings still get some extra vertical spacing.
     if h.numbering != none {
-      pagebreak(weak: true)
+      assert(
+        chapter-start-at in (none, "even", "odd"),
+        message: "invalid option for chapter starting page"
+      )
+
+      {
+        // Ensure truly empty pages when skipping pages to next chapter.
+        set page(footer: none) if chapter-start-at != none
+        pagebreak(weak: true, to: chapter-start-at)
+      }
+
       v(2.3cm)
 
       // Reset figure counters.
