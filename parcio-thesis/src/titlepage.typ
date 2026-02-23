@@ -1,15 +1,16 @@
 #import "util.typ": _huge, _large, _Large
 
 #let title-page(
-  title,
   author,
   thesis-type,
   header-logo,
   reviewers,
   translations,
   date,
-) = {
-  set align(center)
+) = align(center, {
+  show std.title: set block(above: 2.25em, below: 2em)
+  show std.title: set text(_huge, font: "Libertinus Sans", weight: "bold")
+  show std.title: set par(justify: false)
 
   let (first-reviewer, second-reviewer, supervisor) = translations.title-page
   let (value, compound) = translations.thesis
@@ -19,16 +20,10 @@
   header-logo
   linebreak()
   
-  v(2em)
+  v(1.75em)
+  
   text(_Large, font: "Libertinus Serif")[*#thesis-type*]
-  v(1.5em)
-  
-  text(_huge, font: "Libertinus Sans")[
-    #set par(justify: false)
-    *#title*
-  ]
-  
-  v(1.5em)
+  std.title()
 
   /* ----- */
 
@@ -39,6 +34,7 @@
   link("mailto:" + author.mail, text(_large * 0.95, author.mail))
 
   v(12pt)
+
   [
     #show regex("[a-zA-Z]+"): r => translations.date.months.at(date.month() - 1)
     #date.display(translations.date.date-format)
@@ -69,4 +65,4 @@
   }
 
   v(1fr)
-}
+})
