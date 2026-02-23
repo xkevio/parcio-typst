@@ -28,7 +28,7 @@
 
 /* ----- General theming and show rules ----- */
 
-#let parcio-theme(aspect-ratio: "16-9", text-size: 20pt, body) = {
+#let parcio-theme(aspect-ratio: "16-9", text-size: 20pt, style-raw-blocks: true, body) = {
   set page(
     paper: "presentation-" + aspect-ratio,
     margin: 0em,
@@ -44,21 +44,25 @@
 
   // Add line numbers to code block.
   show raw.where(block: true): r => {
-    show raw: set par(leading: 0.75em)
-    show raw.line: l => {
-      box(table(
-        columns: (-1.25em, 100%),
-        stroke: 0pt,
-        inset: 0em,
-        column-gutter: 1em,
-        align: (x, y) => if x == 0 { right } else { left },
-        text(fill: ovgu-darkgray, str(l.number)),
-        l.body,
-      ))
-    }
+    if style-raw-blocks {
+      show raw: set par(leading: 0.75em)
+      show raw.line: l => {
+        box(table(
+          columns: (-1.25em, 100%),
+          stroke: 0pt,
+          inset: 0em,
+          column-gutter: 1em,
+          align: (x, y) => if x == 0 { right } else { left },
+          text(fill: ovgu-darkgray, str(l.number)),
+          l.body,
+        ))
+      }
 
-    set align(left)
-    block(width: 100%, stroke: gray + 0.5pt, inset: 0.75em, r)
+      set align(left)
+      block(width: 100%, stroke: gray + 0.5pt, inset: 0.75em, r)
+    } else {
+      r
+    }
   }
 
   // Display supplement in bold.

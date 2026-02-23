@@ -64,7 +64,7 @@
 #slide(
   title: "Math",
 )[
-  $ (diff T) / (diff x)(0, t) = (diff T) / (diff x)(L, t) = 0\ "where" forall t > 0 "with" L = "length". $
+  $ (partial T) / (partial x)(0, t) = (partial T) / (partial x)(L, t) = 0\ "where" forall t > 0 "with" L = "length". $
 
   \
 
