@@ -171,7 +171,7 @@
 
   /* ----------------------------- */
 
-  show heading.where(level: 1): it => it + v(0.65em)
+  show heading.where(level: 1): it => it + v(0.6em)
   show heading.where(level: 2).or(heading.where(level: 3)): set text(font: "Libertinus Sans", _Large)
   show heading.where(level: 2).or(heading.where(level: 3)): set block(spacing: 1.25em)
   
