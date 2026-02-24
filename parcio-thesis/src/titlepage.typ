@@ -19,8 +19,7 @@
 
   header-logo
   linebreak()
-  
-  v(1.75em)
+  v(1.75em) // @todo: figure out how to make it flexible based on title length!
   
   text(_Large, font: "Libertinus Serif")[*#thesis-type*]
   std.title()
@@ -30,10 +29,10 @@
   set text(_Large)
   
   author.name
-  v(0.5em, weak: true)
+  linebreak()
   link("mailto:" + author.mail, text(_large * 0.95, author.mail))
 
-  v(12pt)
+  parbreak()
 
   [
     #show regex("[a-zA-Z]+"): r => translations.date.months.at(date.month() - 1)
@@ -50,12 +49,10 @@
 
     [
       #first-reviewer:\
-      #first-reviewer-name\ \
-      #v(-1.5em)
-  
+      #first-reviewer-name\   
+      
       #second-reviewer:\
-      #second-reviewer-name\ \
-      #v(-1.5em)
+      #second-reviewer-name\
 
       #if supervisor-name != none [
         #supervisor:\

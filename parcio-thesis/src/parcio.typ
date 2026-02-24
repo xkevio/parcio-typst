@@ -171,9 +171,9 @@
 
   /* ----------------------------- */
 
-  show heading: set block(spacing: 1.25 * _Large)
-  show heading.where(level: 2): set text(font: "Libertinus Sans", _Large)
-  show heading.where(level: 3): set text(font: "Libertinus Sans", _Large)
+  show heading.where(level: 1): it => it + v(0.65em)
+  show heading.where(level: 2).or(heading.where(level: 3)): set text(font: "Libertinus Sans", _Large)
+  show heading.where(level: 2).or(heading.where(level: 3)): set block(spacing: 1.25em)
   
   set footnote.entry(separator: line(length: 40%, stroke: 0.5pt))
   set list(marker: (sym.bullet, "◦"))
