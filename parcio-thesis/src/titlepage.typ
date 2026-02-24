@@ -8,7 +8,7 @@
   translations,
   date,
 ) = align(center, {
-  show std.title: set block(above: 2.25em, below: 2em)
+  show std.title: set block(spacing: 2em)
   show std.title: set text(_huge, font: "Libertinus Sans", weight: "bold")
   show std.title: set par(justify: false)
 
