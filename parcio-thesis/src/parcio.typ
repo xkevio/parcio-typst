@@ -128,7 +128,7 @@
   /* ---- Customization of ToC ---- */
 
   set outline(title: trans.contents)
-  show outline: it => { show heading: pad.with(bottom: 0.65em); it }
+  show outline: it => { show heading: pad.with(bottom: 0.75em); it }
 
   // Level 1 outline entries are bold and there is no fill.
   show outline.entry.where(level: 1): set outline.entry(fill: none)
