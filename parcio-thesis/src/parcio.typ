@@ -2,37 +2,56 @@
 #import "util.typ": *
 
 #let parcio(
-  title: [Title], 
+  /// The title of your thesis.
+  /// -> content
+  title: [Title],
+  /// The author data (your name and student mail).
+  /// -> dictionary
   author: (name: "Author", mail: "author@ovgu.de"), 
-  abstract: [], 
-  thesis-type: "Bachelor/Master", 
-  reviewers: (), 
+  /// The optional abstract of your thesis.
+  /// -> content | none
+  abstract: [],
+  /// The thesis type (bachelor, master, PhD, etc...).
+  /// -> string
+  thesis-type: "Bachelor or Master",
+  /// The reviewers and supervisors of your thesis.
+  /// -> array 
+  reviewers: (),
+  /// The submission date.
+  /// -> datetime
   date: datetime.today(),
+  /// The way your headings should be numbered.
+  /// -> numbering | string
   heading-numbering: "1.1.",
+  /// Whether to start a new chapter at an even or odd page (can be `"even"`, `"odd"` or `none`).
+  /// -> str | none
+  chapter-start-at: none,
+  /// The language of your thesis for automatic hyphenation and spellcheck.
+  /// -> string
   lang: "en",
-  header-logo: none,
-  translations: none,
+  /// The logo(s) of your faculty or institution.
+  /// -> content
+  header-logo: image("logos/OVGU-INF.pdf", width: 66%),
+  /// Custom translations for certain keywords in TOML format.
+  /// -> dictionary
+  translations: toml("translations.toml"),
   body
 ) = {
-  // Basic document rules.
+  // Basic document & page rules.
   set document(title: title, author: author.name)
   set page(
     "a4", 
-    margin: (left: 2.5cm, right: 2.5cm), 
+    margin: (x: 2.5cm), 
     number-align: right, 
     numbering: "i", 
     footer: none
   )
 
   // Handle translations in separate toml file for basic terms.
-  let _translation-file = toml(if-none("translations.toml", translations))
-  let translations = _translation-file.at(
-    lang, 
-    default: _translation-file.at(_translation-file.default-lang)
-  )
+  let trans = translations.at(lang, default: translations.at(translations.default-lang))
 
   set text(font: "Libertinus Serif", 12pt, lang: lang)
-  set heading(numbering: heading-numbering, supplement: translations.section)
+  set heading(numbering: heading-numbering, supplement: trans.section)
   set par(justify: true)
   set math.equation(numbering: "(1)")
 
@@ -59,12 +78,23 @@
   /* ---- Stylization of headings / chapters. ---- */
 
   // Create "Chapter X." heading for every numbered level 1 heading.
-  show heading.where(level: 1): set heading(supplement: translations.chapter)
+  show heading.where(level: 1): set heading(supplement: trans.chapter)
   show heading.where(level: 1): h => {
     set text(_huge, font: "Libertinus Sans")
 
+    // Non-numbered headings still get some extra vertical spacing.
     if h.numbering != none {
-      pagebreak(weak: true)
+      assert(
+        chapter-start-at in (none, "even", "odd"),
+        message: "invalid option for chapter starting page"
+      )
+
+      {
+        // Ensure truly empty pages when skipping pages to next chapter.
+        set page(footer: none) if chapter-start-at != none
+        pagebreak(weak: true, to: chapter-start-at)
+      }
+
       v(2.3cm)
 
       // Reset figure counters.
@@ -76,7 +106,7 @@
         #let heading-prefix = if h.supplement == [Appendix] [
           Appendix #counter(heading).display(h.numbering)
         ] else [
-          #translations.chapter #counter(heading).display()
+          #trans.chapter #counter(heading).display()
         ]
 
         #heading-prefix#v(0.2em)#h.body
@@ -97,8 +127,8 @@
 
   /* ---- Customization of ToC ---- */
 
-  set outline(title: translations.contents)
-  show outline: it => { show heading: pad.with(bottom: 1.25em); it }
+  set outline(title: trans.contents)
+  show outline: it => { show heading: pad.with(bottom: 0.75em); it }
 
   // Level 1 outline entries are bold and there is no fill.
   show outline.entry.where(level: 1): set outline.entry(fill: none)
@@ -141,9 +171,9 @@
 
   /* ----------------------------- */
 
-  show heading: set block(spacing: 1.25 * _Large)
-  show heading.where(level: 2): set text(font: "Libertinus Sans", _Large)
-  show heading.where(level: 3): set text(font: "Libertinus Sans", _Large)
+  show heading.where(level: 1): it => it + v(0.6em)
+  show heading.where(level: 2).or(heading.where(level: 3)): set text(font: "Libertinus Sans", _Large)
+  show heading.where(level: 2).or(heading.where(level: 3)): set block(spacing: 1.25em)
   
   set footnote.entry(separator: line(length: 40%, stroke: 0.5pt))
   set list(marker: (sym.bullet, "◦"))
@@ -151,12 +181,11 @@
   /* --- Title Page --- */
 
   title-page(
-    title,
     author,
     thesis-type,
     header-logo,
     reviewers,
-    translations,
+    trans,
     date
   )
   

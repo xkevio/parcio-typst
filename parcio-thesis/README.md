@@ -13,7 +13,7 @@
 To use this template, simply import it as shown below (more options under `Usage`):
 
 ```typ
-#import "@preview/parcio-thesis:0.2.3": *
+#import "@preview/parcio-thesis:0.3.0": *
 
 #show: parcio.with(
   title: "My great thesis",
@@ -37,28 +37,51 @@ just install
 
 ## Usage
 
-See here for **all** possible arguments (and their default values) and utility functions:
+See here for **all** possible arguments (and their default values) as well as utility functions:
 
 ```typ
-#import "@preview/parcio-thesis:0.2.3": *
+#import "@preview/parcio-thesis:0.3.0": *
 
 #show: parcio.with(
-  title: "Title",
-  author: (name: "Author", mail: "author@ovgu.de"),
+  /// The title of your thesis.
+  /// -> content
+  title: [Title],
+  /// The author data (your name and student mail).
+  /// -> dictionary
+  author: (name: "Author", mail: "author@ovgu.de"), 
+  /// The optional abstract of your thesis.
+  /// -> content | none
   abstract: [],
-  thesis-type: "Bachelor/Master",
+  /// The thesis type (bachelor, master, PhD, etc...).
+  /// -> string
+  thesis-type: "Bachelor or Master",
+  /// The reviewers and supervisors of your thesis.
+  /// -> array 
   reviewers: (),
+  /// The submission date.
+  /// -> datetime
   date: datetime.today(),
+  /// The way your headings should be numbered.
+  /// -> numbering | string
   heading-numbering: "1.1.",
+  /// Whether to start a new chapter at an even or odd page (can be `"even"`, `"odd"` or `none`).
+  /// -> str | none
+  chapter-start-at: none,
+  /// The language of your thesis for automatic hyphenation and spellcheck.
+  /// -> string
   lang: "en",
-  header-logo: none,
-  translations: none,
+  /// The logo(s) of your faculty or institution.
+  /// -> content
+  header-logo: image("logos/OVGU-INF.pdf", width: 66%),
+  /// Custom translations for certain keywords in TOML format.
+  /// -> dictionary
+  translations: toml("translations.toml")
 )
 
 // Use these to *enable* or *change* page numbering for your frontmatter and mainmatter respectively.
 // (By default, this template hides the page numbering!)
-#show: roman-numbering.with(reset: <true|false>, alternate: <true|false>)
-#show: arabic-numbering.with(reset: <true|false>, alternate: <true|false>)
+#show: roman-numbering.with(reset: true, alternate: true)
+#show: arabic-numbering.with(reset: true, alternate: true)
 ```
 
 ### Utility Functions
@@ -82,7 +105,7 @@ These could be useful while writing your thesis!
 #let subfigure(..)
 
 // A ParCIO-like table with a design taken from the LaTeX template.
-#let parcio-table(max-rows, ..args)
+#let parcio-table(..args)
 
 // Nicer handling of (multiple) appendices. Specify `reset: true` with your first appendix to reset the heading counter!
 #let appendix(reset: false, label: none, body)
@@ -126,6 +149,6 @@ This template requires these three fonts to be installed on your system[^1]:
 * Libertinus Sans (https://github.com/alerque/libertinus)
 * Inconsolata (https://github.com/googlefonts/Inconsolata)
 
-We bundle the default "Faculty of Computer Science" head banner and use it as the `header-logo`. You can find yours at: https://www.cd.ovgu.de/Fakult%C3%A4ten.html.
+We bundle the default "Faculty of Computer Science" head banner and use it as the `header-logo` (the 0-BSD license does not apply to this file). You can find yours at: https://www.cd.ovgu.de/Fakult%C3%A4ten.html. These might include additional layers (_optional content groups_) which should be removed with tools such as Inkscape.
 
 [^1]: Typst should already provide the Libertinus font family by default as it is their standard font.

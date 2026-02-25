@@ -15,9 +15,7 @@
 
 /* ---- Convencience functions ---- */
 
-#let if-none(x, other) = if other == none { x } else { other }
 #let mono-args = arguments(font: "Inconsolata", size: 12pt * 0.95)
-
 #let setup-numbering(doc, num: "1", reset: true, alternate: true) = {
   let footer = if alternate {
     context {
@@ -75,14 +73,14 @@
 )
 
 // A ParCIO-like table with a design taken from the LaTeX template.
-#let parcio-table(max-rows, ..args) = table(
+#let parcio-table(..args) = table(
   ..args,
   row-gutter: (2.5pt, auto),
   stroke: (x, y) => (
     left: 0.5pt,
     right: 0.5pt,
-    top: if y <= 1 { 0.5pt },
-    bottom: if y == 0 or y == max-rows - 1 { 0.5pt }
+    top: if y <= 1 { 0.5pt } else { 0pt },
+    bottom: 0.5pt
   )
 )
 

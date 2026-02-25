@@ -1,15 +1,16 @@
 #import "util.typ": _huge, _large, _Large
 
 #let title-page(
-  title,
   author,
   thesis-type,
   header-logo,
   reviewers,
   translations,
   date,
-) = {
-  set align(center)
+) = align(center, {
+  show std.title: set block(spacing: 2em)
+  show std.title: set text(_huge, font: "Libertinus Sans", weight: "bold")
+  show std.title: set par(justify: false)
 
   let (first-reviewer, second-reviewer, supervisor) = translations.title-page
   let (value, compound) = translations.thesis
@@ -17,31 +18,28 @@
   let thesis-type = thesis-type + thesis-suffix
 
   header-logo
-
-  v(4.75em)
-
+  linebreak()
+  v(1.75em) // @todo: figure out how to make it flexible based on title length!
+  
   text(_Large, font: "Libertinus Serif")[*#thesis-type*]
-  v(2.5em)
-  text(_huge, font: "Libertinus Sans")[
-    #set par(justify: false)
-    *#title*
-  ]
-  v(1.25em)
+  std.title()
 
   /* ----- */
 
   set text(_Large)
   
   author.name
-  v(0.75em, weak: true)
+  linebreak()
   link("mailto:" + author.mail, text(_large * 0.95, author.mail))
 
-  v(0.5em)
+  parbreak()
+
   [
     #show regex("[a-zA-Z]+"): r => translations.date.months.at(date.month() - 1)
     #date.display(translations.date.date-format)
   ]
-  v(5.35em)
+  
+  v(1fr)
 
   // First and second reviewer are required, supervisor is optional.
   if reviewers.len() >= 2 {
@@ -51,12 +49,10 @@
 
     [
       #first-reviewer:\
-      #first-reviewer-name\ \
-      #v(-1.5em)
-  
+      #first-reviewer-name\   
+      
       #second-reviewer:\
-      #second-reviewer-name\ \
-      #v(-1.5em)
+      #second-reviewer-name\
 
       #if supervisor-name != none [
         #supervisor:\
@@ -64,4 +60,6 @@
       ]
     ]
   }
-}
+
+  v(1fr)
+})

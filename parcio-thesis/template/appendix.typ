@@ -1,4 +1,4 @@
-#import "@local/parcio-thesis:0.2.3": appendix
+#import "@local/parcio-thesis:0.3.0": appendix
 
 #appendix(reset: true, label: <appendix>)[Appendix]
 
